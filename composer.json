@@ -12,7 +12,7 @@
         "intervention/imagecache": "dev-master",
         "intervention/helper": "dev-master",
         "intervention/validation": "dev-master",
-        "maatwebsite/excel": "dev-master",
+        "maatwebsite/excel": "1.*",
         "alexwhitman/view-themes": "dev-master",
         "barryvdh/laravel-dompdf": "dev-master",
         "knplabs/knp-snappy": "*",

@@ -1100,12 +1100,19 @@ class AdminController extends Controller {
             ->sheet('sheet1')
             ->with($sdata)
             ->save('xls',public_path().'/storage/dled');
-        */
 
         Excel::create( $fname )
             ->sheet('sheet1')
             ->with($sdata)
             ->save('xls',public_path().'/storage/dled');
+        */
+
+        $path = Excel::create( $fname, function($excel) use ($sdata){
+                $excel->sheet('sheet1')
+                    ->with($sdata);
+            })->save('xls',public_path().'/storage/dled',true);
+
+        //print_r($path);
 
         $fp = fopen(public_path().'/storage/dled/'.$fname.'.csv', 'w');
 
@@ -1119,7 +1126,7 @@ class AdminController extends Controller {
         $result = array(
             'status'=>'OK',
             'filename'=>$fname,
-            'urlxls'=>URL::to(strtolower($this->controller_name).'/dl/'.$fname.'.xls'),
+            'urlxls'=>URL::to(strtolower($this->controller_name).'/dl/'.$path['file']),
             'urlcsv'=>URL::to(strtolower($this->controller_name).'/csv/'.$fname.'.csv'),
             'q'=>$lastQuery
         );
@@ -1189,68 +1196,147 @@ class AdminController extends Controller {
 
             $xlsfile = realpath('storage/upload').'/'.$rstring.'/'.$filename;
 
-            $imp = Excel::load($xlsfile)->toArray();
+            //$imp = Excel::load($xlsfile)->toArray();
+
+            $imp = array();
+
+            Excel::load($xlsfile,function($reader) use (&$imp){
+                $imp = $reader->toArray();
+            })->get();
 
             $headrow = $imp[$headindex - 1];
+
+            //print_r($headrow);
 
             $firstdata = $firstdata - 1;
 
             $imported = array();
 
-            //print_r($headrow);
+            $sessobj = new Importsession();
+
+            $sessobj->heads = array_values($headrow);
+            $sessobj->isHead = 1;
+            $sessobj->sessId = $rstring;
+            $sessobj->save();
 
             for($i = $firstdata; $i < count($imp);$i++){
 
-                $row = $imp[$i];
-
-                $rowitem = array();
-
-                for($j = 0 ; $j < count($headrow); $j++){
-                    if(isset($headrow[$j])){
-                        $rowitem[$headrow[$j]] = $row[$j];
-                    }
-                }
+                $rowitem = $imp[$i];
 
                 $imported[] = $rowitem;
 
-                if($importkey != '' && !is_null($importkey)){
-                    $obj = $this->model->where($importkey, '=', $rowitem[$importkey])->first();
+                $sessobj = new Importsession();
 
-                    if($obj){
+                $rowtemp = array();
+                foreach($rowitem as $k=>$v){
+                    $sessobj->{ $headrow[$k] } = $v;
+                    $rowtemp[$headrow[$k]] = $v;
+                }
+                $rowitem = $rowtemp;
 
-                        foreach($rowitem as $k=>$v){
-                            if($v != ''){
-                                $obj->{$k} = $v;
-                            }
+                $sessobj->sessId = $rstring;
+                $sessobj->isHead = 0;
+                $sessobj->save();
+
+            }
+
+        }
+
+        $this->backlink = strtolower($this->controller_name);
+
+        $commit_url = $this->backlink.'/commit/'.$rstring;
+
+        return Redirect::to($commit_url);
+
+    }
+
+    public function getCommit($sessid)
+    {
+        $heads = Importsession::where('sessId','=',$sessid)
+            ->where('isHead','=',1)
+            ->first();
+
+        $heads = $heads['heads'];
+
+        $imports = Importsession::where('sessId','=',$sessid)
+            ->where('isHead','=',0)
+            ->get();
+
+        $headselect = array();
+
+        foreach ($heads as $h) {
+            $headselect[$h] = $h;
+        }
+
+        $title = $this->controller_name;
+
+        $submit = strtolower($this->controller_name).'/commit/'.$sessid;
+
+        return View::make('shared.commitselect')
+            ->with('title',$title)
+            ->with('submit',$submit)
+            ->with('headselect',$headselect)
+            ->with('heads',$heads)
+            ->with('imports',$imports);
+    }
+
+    public function postCommit($sessid)
+    {
+        $in = Input::get();
+
+        $importkey = $in['edit_key'];
+
+        $selector = $in['selector'];
+
+        $edit_selector = isset($in['edit_selector'])?$in['edit_selector']:array();
+
+        foreach($selector as $selected){
+            $rowitem = Importsession::find($selected)->toArray();
+
+            $do_edit = in_array($selected, $edit_selector);
+
+            if($importkey != '' && !is_null($importkey) && isset($rowitem[$importkey]) && $do_edit ){
+                $obj = $this->model
+                    ->where($importkey, 'exists', true)
+                    ->where($importkey, '=', $rowitem[$importkey])->first();
+
+                if($obj){
+
+                    foreach($rowitem as $k=>$v){
+                        if($v != ''){
+                            $obj->{$k} = $v;
                         }
-
-                        $obj->save();
-                    }else{
-
-                        $rowitem['createdDate'] = new MongoDate();
-                        $rowitem['lastUpdate'] = new MongoDate();
-
-                        $rowitem = $this->beforeImportCommit($rowitem);
-
-                        $this->model->insert($rowitem);
                     }
 
-
+                    $obj->save();
                 }else{
 
+                    unset($rowitem['_id']);
                     $rowitem['createdDate'] = new MongoDate();
                     $rowitem['lastUpdate'] = new MongoDate();
 
                     $rowitem = $this->beforeImportCommit($rowitem);
 
                     $this->model->insert($rowitem);
-
                 }
+
+
+            }else{
+
+                unset($rowitem['_id']);
+                $rowitem['createdDate'] = new MongoDate();
+                $rowitem['lastUpdate'] = new MongoDate();
+
+                $rowitem = $this->beforeImportCommit($rowitem);
+
+                $this->model->insert($rowitem);
 
             }
 
 
         }
+
+        $this->backlink = strtolower($this->controller_name);
 
         return Redirect::to($this->backlink);
 

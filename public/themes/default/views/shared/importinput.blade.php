@@ -14,8 +14,8 @@
         {{ Former::hidden( 'controller',$back ) }}
         {{ Former::hidden( 'importkey',$importkey ) }}
 
-        {{ Former::text('headindex','Row containing header')->class('span2')->value(2) }}
-        {{ Former::text('firstdata','Data starting at row')->class('span2')->value(3) }}
+        {{ Former::text('headindex','Row containing header')->class('span2')->value(1) }}
+        {{ Former::text('firstdata','Data starting at row')->class('span2')->value(2) }}
 
     </div>
     <div class="span6">

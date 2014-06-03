@@ -16,6 +16,8 @@ class GlossaryController extends AdminController {
         //$this->model = DB::collection('documents');
         $this->title = $this->controller_name;
 
+        $this->backlink = strtolower($this->controller_name);
+
     }
 
     public function getTest()
@@ -152,6 +154,27 @@ class GlossaryController extends AdminController {
     public function getViewpics($id)
     {
 
+    }
+
+    public function postDlxl()
+    {
+
+        $this->heads = null;
+
+
+        //"title": "Abstract of judgment,law",
+        //"slug": "abstract-of-judgment-law",
+        //"body": "<span><span>The summary of a court judgment\r\n that creates a lien against a property when filed with the county recorder.\r\n \r\n <\/span>\r\n<\/span>",
+
+        $this->fields = array(
+                array('title',array('kind'=>'text','query'=>'like','pos'=>'both','show'=>true)),
+                array('slug',array('kind'=>'text','query'=>'like','pos'=>'both','show'=>true)),
+                array('body',array('kind'=>'text','query'=>'like','pos'=>'both','show'=>true)),
+                array('createdDate',array('kind'=>'datetime','query'=>'like','pos'=>'both','show'=>true)),
+                array('lastUpdate',array('kind'=>'datetime','query'=>'like','pos'=>'both','show'=>true))
+        );
+
+        return parent::postDlxl();
     }
 
 
