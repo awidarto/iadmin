@@ -53,6 +53,9 @@
                         <label>Force Update</label>
                         <input id="edit_select_all" type="checkbox">
                     </th>
+                    <th>
+                        _id
+                    </th>
                     <?php $head_id = 0; ?>
                     @foreach($heads as $head)
                         <th>
