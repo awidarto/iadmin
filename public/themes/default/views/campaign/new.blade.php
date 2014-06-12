@@ -34,11 +34,15 @@
         <h6>Content</h6>
         {{ Former::select('newsletterTemplate', 'Newsletter')
             ->options(Prefs::getNewsletter()->newsletterToSelection('_id','title',false)) }}
-        <h6>Send Mail</h6>
-        {{ Former::select('sendOption', 'Trigger')
+        <h6>Start Campaign</h6>
+        {{ Former::select('sendOption', 'Start')
             ->options( Config::get('kickstart.send_options') ) }}
 
-        {{ Former::text('sendDate','Date')->class('span7 datepicker')
+        {{ Former::select('dayOption', 'Every ')
+            ->help('use for periodicals ( every week / every month )')
+            ->options( Config::get('kickstart.days') ) }}
+
+        {{ Former::text('sendDate','at Date')->class('span7 datepicker')
             //->data_format('dd-mm-yyyy')
             ->help('use if option "At Specified Date" is selected')
             ->append('<i class="icon-th"></i>') }}

@@ -78,6 +78,10 @@ class AdminController extends Controller {
 
     public $place_action = 'both'; // first, both
 
+    public $additional_page_data = array();
+
+    public $table_view = 'tables.simple';
+
 	public function __construct(){
 
 		date_default_timezone_set('Asia/Jakarta');
@@ -165,7 +169,7 @@ class AdminController extends Controller {
         $this->dlxl = (is_null($this->dlxl))? strtolower($this->controller_name).'/dlxl': $this->dlxl;
 
 
-		return View::make('tables.simple')
+        return View::make($this->table_view)
 			->with('title',$this->title )
 			->with('newbutton', $this->newbutton )
 			->with('disablesort',$disablesort )
@@ -184,6 +188,7 @@ class AdminController extends Controller {
             ->with('js_additional_param', $this->js_additional_param)
             ->with('modal_sets', $this->modal_sets)
             ->with('js_table_event', $this->js_table_event)
+            ->with('additional_page_data',$this->additional_page_data)
 			->with('heads',$heads )
 			->with('row',$this->rowdetail );
 
@@ -650,7 +655,8 @@ class AdminController extends Controller {
 			unset($data['id']);
 
 			//print_r($data);
-			//exit();
+			//die();
+            //exit();
 
 			$model = $this->model;
 

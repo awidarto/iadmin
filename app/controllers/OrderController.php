@@ -12,7 +12,7 @@ class OrderController extends AdminController {
         //$this->crumb->append('Home','left',true);
         //$this->crumb->append(strtolower($this->controller_name));
 
-        $this->model = new Orders();
+        $this->model = new Transaction();
         //$this->model = DB::collection('documents');
 
     }
@@ -29,20 +29,25 @@ class OrderController extends AdminController {
     {
 
         $this->heads = array(
-            array('Title',array('search'=>false,'sort'=>false)),
-            array('Venue',array('search'=>true,'sort'=>true)),
-            array('Location',array('search'=>true,'sort'=>true)),
-            array('From',array('search'=>true,'sort'=>true)),
-            array('To',array('search'=>true,'sort'=>true)),
-            array('Category',array('search'=>true,'sort'=>true)),
-            array('Tags',array('search'=>true,'sort'=>true)),
+            array('Order Number',array('search'=>true,'sort'=>true)),
+            array('Property ID',array('search'=>true,'sort'=>true)),
+            array('Property Address',array('search'=>true,'sort'=>true)),
+            array('Order Status',array('search'=>true,'sort'=>true)),
+            array('Agent',array('search'=>true,'sort'=>true)),
+            array('Buyer First Name',array('search'=>false,'sort'=>false)),
+            array('Buyer Last Name',array('search'=>false,'sort'=>false)),
+            array('Buyer Email',array('search'=>false,'sort'=>false)),
+            array('Total Purchase',array('search'=>true,'sort'=>true)),
+            array('EMD',array('search'=>true,'sort'=>true)),
             array('Created',array('search'=>true,'sort'=>true,'date'=>true)),
             array('Last Update',array('search'=>true,'sort'=>true,'date'=>true)),
         );
 
         //print $this->model->where('docFormat','picture')->get()->toJSON();
 
-        $this->title = 'Order';
+        $this->title = 'Transactions';
+
+        $this->can_add = false;
 
         return parent::getIndex();
 
@@ -52,14 +57,17 @@ class OrderController extends AdminController {
     {
 
         $this->fields = array(
-            array('title',array('kind'=>'text','query'=>'like','pos'=>'both','show'=>true)),
-            array('venue',array('kind'=>'text','query'=>'like','pos'=>'both','attr'=>array('class'=>'expander'),'show'=>true)),
-            array('location',array('kind'=>'text','query'=>'like','pos'=>'both','show'=>true)),
-            array('fromDate',array('kind'=>'text','query'=>'like','pos'=>'both','show'=>true)),
-            array('toDate',array('kind'=>'text','query'=>'like','pos'=>'both','show'=>true)),
-            array('category',array('kind'=>'text','query'=>'like','pos'=>'both','show'=>true)),
-            array('tags',array('kind'=>'text','query'=>'like','pos'=>'both','show'=>true)),
-            array('createdDate',array('kind'=>'date','query'=>'like','pos'=>'both','show'=>true)),
+            array('orderNumber',array('kind'=>'text','query'=>'like','pos'=>'both','show'=>true)),
+            array('propertyId',array('kind'=>'text','query'=>'like','pos'=>'both','attr'=>array('class'=>'expander'),'show'=>true)),
+            array('propertyAddress',array('kind'=>'text','callback'=>'propAddress','query'=>'like','pos'=>'both','attr'=>array('class'=>'expander'),'show'=>true)),
+            array('orderStatus',array('kind'=>'text', 'callback'=>'statcolor' ,'query'=>'like','pos'=>'both','show'=>true)),
+            array('agentName',array('kind'=>'text','query'=>'like','pos'=>'both','show'=>true)),
+            array('firstname',array('kind'=>'text','query'=>'like','pos'=>'both','show'=>true)),
+            array('lastname',array('kind'=>'text','query'=>'like','pos'=>'both','show'=>true)),
+            array('email',array('kind'=>'text','query'=>'like','pos'=>'both','show'=>true)),
+            array('total_purchase',array('kind'=>'text','callback'=>'tousd','query'=>'like','pos'=>'both','attr'=>array('class'=>'expander'),'show'=>true)),
+            array('earnestMoney',array('kind'=>'text','callback'=>'etousd','query'=>'like','pos'=>'both','attr'=>array('class'=>'expander'),'show'=>true)),
+            array('createdDate',array('kind'=>'datetime','query'=>'like','pos'=>'both','show'=>true)),
             array('lastUpdate',array('kind'=>'datetime','query'=>'like','pos'=>'both','show'=>true)),
         );
 
@@ -68,12 +76,7 @@ class OrderController extends AdminController {
 
     public function beforeSave($data)
     {
-        //$defaultexpiry = Carbon::fromDate($data['toDate'])->addWeeks(2);
-        /*
-        if($data['expires'] == '') {
-            $data['expires'] = new MongoDate($defaultexpiry);
-        }
-        */
+
         return $data;
     }
 
@@ -106,71 +109,39 @@ class OrderController extends AdminController {
         return parent::postEdit($id,$data);
     }
 
-    public function afterSave($data)
-    {
-        //print_r($data);
-        //exit();
-
-        for($i = 1;$i < 6;$i++){
-
-            if($data['code_'.$i] != ""){
-                $promo = new Promocode();
-                $promo->code = $data['code_'.$i];
-                $promo->value = $data['val_'.$i];
-                $promo->eventName = $data['title'];
-                $promo->eventSlug = $data['slug'];
-                $promo->lastUpdate = new MongoDate();
-                $promo->createdDate = new MongoDate();
-                $promo->expires = $data['expires'];
-                $promo->save();
-            }
-
+    public function fulladdress($data){
+        if(isset($data['address_2'])){
+            return $data['address'].' '.$data['address_2'];
+        }else{
+            return $data['address'];
         }
-
-        return $data;
     }
 
-    public function afterUpdate($id,$data = null)
-    {
-
-        for($i = 1;$i < 6;$i++){
-
-            if($data['code_'.$i] != ""){
-                $promo = Promocode::where('eventSlug', '=', $data['slug'])->where('code','=',$data['code_'.$i])->first();
-
-                if(is_null($promo)){
-                    $promo = new Promocode();
-                    $promo->code = $data['code_'.$i];
-                    $promo->value = $data['val_'.$i];
-                    $promo->eventName = $data['title'];
-                    $promo->eventSlug = $data['slug'];
-                    $promo->lastUpdate = new MongoDate();
-                    $promo->createdDate = new MongoDate();
-                    $promo->expires = $data['expires'];
-                    $promo->save();
-
-                }else{
-                    $promo->value = $data['val_'.$i];
-                    $promo->lastUpdate = new MongoDate();
-                    $promo->expires = $data['expires'];
-                    $promo->save();
-                }
-
-            }
-
-
-        }
-
-        return $id;
+    public function propAddress($data){
+        return $data['propertyNumber'].' '.$data['propertyAddress'].' '.$data['propertyState'].' '.$data['propertyZipCode'];
     }
 
+    public function etousd($data){
+        return '$'.Ks::usd($data['earnestMoney']);
+    }
+
+    public function tousd($data){
+        return '$'.Ks::usd($data['total_purchase']);
+    }
+
+    public function statcolor($data){
+        return '<span class="'.$data['orderStatus'].'">'.$data['orderStatus'].'</span>';
+    }
 
     public function makeActions($data)
     {
-        $delete = '<span class="del" id="'.$data['_id'].'" ><i class="icon-trash"></i>Delete</span>';
-        $edit = '<a href="'.URL::to('event/edit/'.$data['_id']).'"><i class="icon-edit"></i>Update</a>';
+        $change = '<span class="chg act" data-status="'.$data['orderStatus'].'" rel="'.$data['orderNumber'].'" id="'.$data['_id'].'" ><i class="icon-edit"></i> Change Status</span>';
+        $delete = '<span class="del act" id="'.$data['_id'].'" ><i class="icon-trash"></i>Delete</span>';
+        $edit = '<a href="'.URL::to('transaction/edit/'.$data['_id']).'"><i class="icon-edit"></i>Update</a>';
+        $dl = '<a href="'.URL::to('pr/dl/'.$data['_id']).'" target="new"><i class="icon-download"></i> Download</a>';
+        $print = '<a href="'.URL::to('pr/print/'.$data['_id']).'" target="new"><i class="icon-print"></i> Print</a>';
 
-        $actions = $edit.'<br />'.$delete;
+        $actions = $change.'<br />'.$dl.'<br />'.$print.'<br /><br />'.$delete;
         return $actions;
     }
 
@@ -243,3 +214,5 @@ class OrderController extends AdminController {
 
 
 }
+
+

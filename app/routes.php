@@ -608,6 +608,7 @@ Route::get('pdf',function(){
     $html2pdf->Output('exemple.pdf','D');
 });
 
+/*
 Route::get('brochure/dl/{id}',function($id){
 
     $prop = Property::find($id)->toArray();
@@ -622,7 +623,6 @@ Route::get('brochure/dl/{id}',function($id){
         ->stream('download.pdf');
 });
 
-/*
 Route::get('brochure',function(){
     View::make('print.brochure');
 });

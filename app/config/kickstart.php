@@ -23,5 +23,14 @@ return array(
             'onceaweek'=>'Once A Week',
             'onceamonth'=>'Once A Month'
         ),
+    'days'=>array(
+            'Monday'=>'Monday',
+            'Tuesday'=>'Tuesday',
+            'Wednesday'=>'Wednesday',
+            'Thursday'=>'Thursday',
+            'Friday'=>'Friday',
+            'Saturday'=>'Saturday',
+            'Sunday'=>'Sunday'
+        ),
 
     );

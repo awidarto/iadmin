@@ -16,11 +16,11 @@
 
         {{ Former::select('status')->options(array('inactive'=>'Inactive','active'=>'Active'))->label('Status') }}
 
-        {{ Former::text('fromDate','From')->class('span7 eventdate')
+        {{ Former::text('validFromDate','Campaign Period From')->class('span7 eventdate')
             ->id('fromDate')
             ->append('<i class="icon-th"></i>') }}
 
-        {{ Former::text('toDate','Until')->class('span7 eventdate')
+        {{ Former::text('validToDate','Until')->class('span7 eventdate')
             ->id('toDate')
             ->append('<i class="icon-th"></i>') }}
 
@@ -36,11 +36,15 @@
         <h6>Content</h6>
         {{ Former::select('newsletterTemplate', 'Newsletter')
             ->options(Prefs::getNewsletter()->newsletterToSelection('_id','title',false)) }}
-        <h6>Send Mail</h6>
-        {{ Former::select('sendOption', 'Trigger')
+        <h6>Start Campaign</h6>
+        {{ Former::select('sendOption', 'Start')
             ->options( Config::get('kickstart.send_options') ) }}
 
-        {{ Former::text('sendDate','Date')->class('span7 datepicker')
+        {{ Former::select('dayOption', 'Every ')
+            ->help('use for periodicals ( every week / every month )')
+            ->options( Config::get('kickstart.days') ) }}
+
+        {{ Former::text('sendDate','at Date')->class('span7 datepicker')
             //->data_format('dd-mm-yyyy')
             ->help('use if option "At Specified Date" is selected')
             ->append('<i class="icon-th"></i>') }}
@@ -60,9 +64,6 @@
 
 
 $(document).ready(function() {
-    $('select').select2({
-      width : 'resolve'
-    });
 
     $('#title').keyup(function(){
         var title = $('#title').val();

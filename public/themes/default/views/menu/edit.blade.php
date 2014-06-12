@@ -5,185 +5,41 @@
 
 <h3>{{$title}}</h3>
 
-{{Former::open_for_files($submit,'POST',array('class'=>'custom addAttendeeForm'))}}
+{{Former::open_for_files_vertical($submit,'POST',array('class'=>'custom addAttendeeForm'))}}
 
 {{ Former::hidden('id')->value($formdata['_id']) }}
+
 <div class="row-fluid">
-    <div class="span6">
-
-        {{ Former::text('brandName','Brand Name') }}
-        {{ Former::text('shopCategory','Shop Category') }}
-        {{ Former::text('tradeName','Trade Name') }}
-        {{ Former::select('countryOfOrigin')->options(Config::get('country.countries'))->label('Country of Origin') }}
-        {{ Former::text('modelNo','Model No.') }}
-        {{ Former::text('collectionName','Collection Name') }}
-        {{ Former::textarea('ecoFriendly','Eco-friendly')->id('ecofriendly') }}
-        {{ Former::text('designedBy','Designed by') }}
-        {{ Former::text('madeBy','Made by') }}
-        {{ Former::text('priceUSD','Price ($USD)') }}
-        {{ Former::text('visibleTags','Tags (visible)')->class('tag_keyword') }}
-        {{ Former::text('hiddenTags','Tags (hidden)')->class('tag_keyword') }}
-
-        <div class="control-group">
-            <label class="control-label" for="userfile">Upload Images</label>
-            <div class="controls">
-                <span class="btn btn-success fileinput-button">
-                    <i class="icon-plus icon-white"></i>
-                    <span>Add files...</span>
-                    <!-- The file input field used as target for the file upload widget -->
-                    <input id="fileupload" type="file" name="files[]" multiple>
-                </span>
-                <br />
-                <br />
-                <div id="progress" class="progress progress-success progress-striped">
-                    <div class="bar"></div>
-                </div>
-                <br />
-                <div id="files" class="files">
-                    <ul>
-                        <?php
-
-                            if( isset($formdata['filename']) ){
-
-                                $filename = $formdata['filename'];
-                                $thumbnail_url = $formdata['thumbnail_url'];
-
-                                $thumb = '<li><img src="%s"><br /><input type="radio" name="defaultpic" value="%s" %s > Default<br />';
-                                $thumb .= '<span class="img-title">%s</span>';
-                                $thumb .= '<label for="colour">Colour</label><input type="text" name="colour[]" />';
-                                $thumb .= '<label for="material">Material & Finish</label><input type="text" name="material[]" />';
-                                $thumb .= '<label for="tags">Tags</label><input type="text" name="tag[]" /></li>';
-
-
-                                for($t = 0; $t < count($filename);$t++){
-                                    if($formdata['defaultpic'] == $filename[$t]){
-                                        $isdef = 'checked="checked"';
-                                    }else{
-                                        $isdef = ' ';
-                                    }
-                                    printf($thumb,$thumbnail_url[$t],
-                                        $filename[$t],
-                                        $isdef,
-                                        $filename[$t],
-                                        $formdata['colour'][$t],$formdata['material'][$t],$formdata['tag'][$t]);
-                                }
-
-                            }
-                        ?>
-                        <?php
-                            $allin = Input::old();
-                            $showold = false;
-
-                            if( count($allin) > 0){
-                                $showold = true;
-                            }
-
-                            if($showold && isset( $allin['thumbnail_url'])){
-
-                                $filename = $allin['filename'];
-                                $thumbnail_url = $allin['thumbnail_url'];
-
-                                $thumb = '<li><img src="%s"><br /><input type="radio" name="defaultpic" value="%s" %s > Default<br />';
-                                $thumb .= '<span class="img-title">%s</span>';
-                                $thumb .= '<label for="colour">Colour</label><input type="text" name="colour[]" value="%s" />';
-                                $thumb .= '<label for="material">Material & Finish</label><input type="text" name="material[]"  value="%s" />';
-                                $thumb .= '<label for="tags">Tags</label><input type="text" name="tag[]" value="%s" /></li>';
-
-                                for($t = 0; $t < count($filename);$t++){
-                                    if($allin['defaultpic'] == $filename[$t]){
-                                        $isdef = 'checked="checked"';
-                                    }else{
-                                        $isdef = ' ';
-                                    }
-                                    printf($thumb,$thumbnail_url[$t],
-                                        $filename[$t],
-                                        $isdef,
-                                        $filename[$t],
-                                        $allin['colour'][$t],$allin['material'][$t],$allin['tag'][$t]);
-                                }
-
-                            }
-                        ?>
-                    </ul>
-                </div>
-                <div id="uploadedform">
-                    <?php
-
-                        if(isset( $formdata['filename'] )){
-
-                            $count = 0;
-                            $upcount = count($formdata['filename']);
-
-                            $upl = '';
-                            for($u = 0; $u < $upcount; $u++){
-                                $upl .= '<input type="hidden" name="delete_type[]" value="' . $formdata['delete_type'][$u] . '">';
-                                $upl .= '<input type="hidden" name="delete_url[]" value="' . $formdata['delete_url'][$u] . '">';
-                                $upl .= '<input type="hidden" name="filename[]" value="' . $formdata['filename'][$u]  . '">';
-                                $upl .= '<input type="hidden" name="filesize[]" value="' . $formdata['filesize'][$u]  . '">';
-                                $upl .= '<input type="hidden" name="temp_dir[]" value="' . $formdata['temp_dir'][$u]  . '">';
-                                $upl .= '<input type="hidden" name="thumbnail_url[]" value="' . $formdata['thumbnail_url'][$u] . '">';
-                                $upl .= '<input type="hidden" name="filetype[]" value="' . $formdata['filetype'][$u] . '">';
-                                $upl .= '<input type="hidden" name="fileurl[]" value="' . $formdata['fileurl'][$u] . '">';
-                            }
-
-                            print $upl;
-                        }
-
-                    ?>
-                    <?php
-
-                        if($showold && isset( $allin['filename'] )){
-
-                            $count = 0;
-                            $upcount = count($allin['filename']);
-
-                            $upl = '';
-                            for($u = 0; $u < $upcount; $u++){
-                                $upl .= '<input type="hidden" name="delete_type[]" value="' . $allin['delete_type'][$u] . '">';
-                                $upl .= '<input type="hidden" name="delete_url[]" value="' . $allin['delete_url'][$u] . '">';
-                                $upl .= '<input type="hidden" name="filename[]" value="' . $allin['filename'][$u]  . '">';
-                                $upl .= '<input type="hidden" name="filesize[]" value="' . $allin['filesize'][$u]  . '">';
-                                $upl .= '<input type="hidden" name="temp_dir[]" value="' . $allin['temp_dir'][$u]  . '">';
-                                $upl .= '<input type="hidden" name="thumbnail_url[]" value="' . $allin['thumbnail_url'][$u] . '">';
-                                $upl .= '<input type="hidden" name="filetype[]" value="' . $allin['filetype'][$u] . '">';
-                                $upl .= '<input type="hidden" name="fileurl[]" value="' . $allin['fileurl'][$u] . '">';
-                            }
-
-                            print $upl;
-                        }
-
-                    ?>
-                </div>
-            </div>
-        </div>
-
-
+    <div class="span8">
+        <table id="mainTree" class="table">
+            <colgroup>
+            <col width="30px"></col>
+            <col width="50px"></col>
+            <col width="250px"></col>
+            <col width="50px"></col>
+            <col width="50px"></col>
+            <col width="30px"></col>
+            <col width="30px"></col>
+            <col width="50px"></col>
+            </colgroup>
+            <thead>
+              <tr> <th></th> <th>#</th> <th></th> <th>Ed1</th> <th>Ed2</th> <th>Rb1</th> <th>Rb2</th> <th>Cb</th></tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
     </div>
-    <div class="span6">
+    <div class="span4">
 
-        {{ Former::select('mainCategory','Main Category')->options(Config::get('se.main_categories')) }}
-        {{ Former::text('productName','Product Name') }}
-        {{ Former::textarea('productProperties','Properties') }}
-
-        <div id="productApplication">
-            {{ Former::select('productApplication[]')->options(Config::get('se.applications'))->multiple(true)->label('Application')->select($formdata['productApplication'])}}
-        </div>
-        <div id="productSystem">
-            {{ Former::select('productSystem[]')->options(Config::get('se.systems'))->name('productSystem')->multiple(true)->label('System') }}
-        </div>
-        <div id="productFunction">
-            {{ Former::select('productFunction[]')->options(Config::get('se.functions'))->name('productFunction')->multiple(true)->label('Function') }}
-        </div>
-
-        {{ Former::text('productCategory','Category') }}
-        {{ Former::textarea('availableColours','Avail. Colours') }}
-        {{ Former::textarea('availableMaterialFinishes','Avail. Materials & Finishes') }}
-        {{ Former::textarea('availableDimension','Avail. Dimensions (mm)') }}
+        {{ Former::text('menuTitle','Name')->id('#menuTitle') }}
+        {{ Former::text('slug','Permalink')->id('permalink') }}
+        {{ Former::text('blockName','blockName') }}
+        {{ Former::text('domain','Site Domain') }}
 
     </div>
 </div>
 
-<div class="row-fluid right">
+<div class="row-fluid">
     <div class="span12">
         {{ Form::submit('Save',array('class'=>'btn primary'))}}&nbsp;&nbsp;
         {{ HTML::link($back,'Cancel',array('class'=>'btn'))}}
@@ -191,132 +47,246 @@
 </div>
 {{Former::close()}}
 
-{{ HTML::script('js/wysihtml5-0.3.0.min.js') }}
-{{ HTML::script('js/parser_rules/advanced.js') }}
+{{ HTML::script('js/jquery.ui-contextmenu.js') }}
+
+{{ HTML::style('js/fancytree/skin-bootstrap/ui.fancytree.css') }}
+{{ HTML::script('js/fancytree/jquery.fancytree-all.js') }}
+
+{{ HTML::script('js/fancytree/src/jquery.fancytree.dnd.js') }}
+{{ HTML::script('js/fancytree/src/jquery.fancytree.edit.js') }}
+{{ HTML::script('js/fancytree/src/jquery.fancytree.gridnav.js') }}
+{{ HTML::script('js/fancytree/src/jquery.fancytree.table.js') }}
+{{ HTML::script('js/fancytree/src/jquery.fancytree.glyph.js') }}
+
+
+
+<style type="text/css">
+input.mparam{
+    width:25px;
+}
+
+#mainTree select{
+    width:100px;
+}
+
+.icon-* {
+    width: 1.2em;
+    height: 1.2em;
+}
+</style>
+
 
 <script type="text/javascript">
 
-
 $(document).ready(function() {
 
-    function setVisibleOptions(){
-        var mc = $('#mainCategory').val();
+    var CLIPBOARD = null;
 
-        console.log(mc);
-
-        if( mc == 'Structure'){
-            $('#productFunction').hide();
-            $('#productSystem').show();
-            $('#productApplication').hide();
-        }else if( mc == 'Furniture'){
-            $('#productFunction').show();
-            $('#productSystem').hide();
-            $('#productApplication').hide();
-        }else{
-            $('#productFunction').hide();
-            $('#productSystem').hide();
-            $('#productApplication').show();
-        }
-
-    }
-
-    setVisibleOptions();
-
-    $('select').select2({
-      width : 'resolve'
-    });
-
-    var url = '{{ URL::to('upload') }}';
-
-    $('#fileupload').fileupload({
-        url: url,
-        dataType: 'json',
-        done: function (e, data) {
-            $('#progress .bar').css(
-                'width',
-                '0%'
-            );
-
-            $.each(data.result.files, function (index, file) {
-                var thumb = '<li><img src="' + file.thumbnail_url + '" /><br /><input type="radio" name="defaultpic" value="' + file.name + '"> Default<br /><span class="img-title">' + file.name + '</span>' +
-                '<label for="colour">Colour</label><input type="text" name="colour[]" />' +
-                '<label for="material">Material & Finish</label><input type="text" name="material[]" />' +
-                '<label for="tags">Tags</label><input type="text" name="tag[]" />' +
-                '</li>';
-                $(thumb).appendTo('#files ul');
-
-                var upl = '<input type="hidden" name="delete_type[]" value="' + file.delete_type + '">';
-                upl += '<input type="hidden" name="delete_url[]" value="' + file.delete_url + '">';
-                upl += '<input type="hidden" name="filename[]" value="' + file.name  + '">';
-                upl += '<input type="hidden" name="filesize[]" value="' + file.size  + '">';
-                upl += '<input type="hidden" name="temp_dir[]" value="' + file.temp_dir  + '">';
-                upl += '<input type="hidden" name="thumbnail_url[]" value="' + file.thumbnail_url + '">';
-                upl += '<input type="hidden" name="filetype[]" value="' + file.type + '">';
-                upl += '<input type="hidden" name="fileurl[]" value="' + file.url + '">';
-
-                $(upl).appendTo('#uploadedform');
-
-            });
-        },
-        progressall: function (e, data) {
-            var progress = parseInt(data.loaded / data.total * 100, 10);
-            $('#progress .bar').css(
-                'width',
-                progress + '%'
-            );
-        }
-    })
-    .prop('disabled', !$.support.fileInput)
-        .parent().addClass($.support.fileInput ? undefined : 'disabled');
-
-    $('#field_role').change(function(){
-        //alert($('#field_role').val());
-        // load default permission here
-    });
-
-    /*
-    var editor = new wysihtml5.Editor('ecofriendly', { // id of textarea element
-      toolbar:      'wysihtml5-toolbar', // id of toolbar element
-      parserRules:  wysihtml5ParserRules // defined in parser rules set
-    });
-    */
-
-    $('#name').keyup(function(){
-        var title = $('#name').val();
+    $('#menuTitle').keyup(function(){
+        var title = $('#menuTitle').val();
         var slug = string_to_slug(title);
         $('#permalink').val(slug);
     });
 
-    //$('#color_input').colorPicker();
+    $("#mainTree").fancytree({
+        checkbox: true,
+        titlesTabbable: true,     // Add all node titles to TAB chain
+        source: {
+            url: '{{ URL::to('ajax/menu') }}'
+        },
+        // extensions: ["edit", "table", "gridnav"],
+        extensions: ["edit", "dnd", "table", "gridnav","glyph"],
 
-    // dynamic tables
-    $('#add_btn').click(function(){
-        //alert('click');
-        addTableRow($('#variantTable'));
-        return false;
+        dnd: {
+            preventVoidMoves: true,
+            preventRecursiveMoves: true,
+            autoExpandMS: 400,
+            dragStart: function(node, data) {
+                return true;
+            },
+            dragEnter: function(node, data) {
+            // return ["before", "after"];
+                return true;
+            },
+            dragDrop: function(node, data) {
+                data.otherNode.moveTo(node, data.hitMode);
+            }
+        },
+        edit: {
+        },
+        table: {
+            indentation: 20,
+            nodeColumnIdx: 2,
+            checkboxColumnIdx: 0
+        },
+        gridnav: {
+          autofocusInput: false,
+          handleCursorKeys: true
+        },
+
+
+        lazyLoad: function(event, data) {
+            data.result = {url: "../demo/ajax-sub2.json"};
+        },
+        renderColumns: function(event, data) {
+            var node = data.node,
+            $select = $("<select />"),
+            $tdList = $(node.tr).find(">td");
+
+            // (index #0 is rendered by fancytree by adding the checkbox)
+            if( node.isFolder() ) {
+            // make the title cell span the remaining columns, if it is a folder:
+            $tdList.eq(2)
+                .prop("colspan", 6)
+                .nextAll().remove();
+            }
+
+            $tdList.eq(1).text(node.getIndexHier()).addClass("alignRight");
+            // (index #2 is rendered by fancytree)
+            // $tdList.eq(3).text(node.key);
+            $tdList.eq(3).html("<input class='mparam' type='input' value='" + node.key + "'>");
+            $tdList.eq(4).html("<input class='mparam' type='input' value='" + node.key + "'>");
+            $tdList.eq(5).html("<input type='checkbox' value='" + node.key + "'>");
+            $tdList.eq(6).html("<input type='checkbox' value='" + node.key + "'>");
+            $("<option />", {text: "Local Link", value: "local"}).appendTo($select);
+            $("<option />", {text: "Custom View", value: "custom"}).appendTo($select);
+            $("<option />", {text: "External Link", value: "external"}).appendTo($select);
+            $tdList.eq(7).html($select);
+        }
+    }).on("nodeCommand", function(event, data){
+        // Custom event handler that is triggered by keydown-handler and
+        // context menu:
+        var refNode, moveMode,
+            tree = $(this).fancytree("getTree"),
+            node = tree.getActiveNode();
+
+        switch( data.cmd ) {
+            case "moveUp":
+                node.moveTo(node.getPrevSibling(), "before");
+                node.setActive();
+                break;
+            case "moveDown":
+                node.moveTo(node.getNextSibling(), "after");
+                node.setActive();
+                break;
+            case "indent":
+                refNode = node.getPrevSibling();
+                node.moveTo(refNode, "child");
+                refNode.setExpanded();
+                node.setActive();
+                break;
+            case "outdent":
+                node.moveTo(node.getParent(), "after");
+                node.setActive();
+                break;
+            case "rename":
+                node.editStart();
+                break;
+            case "remove":
+                node.remove();
+                break;
+            case "addChild":
+                refNode = node.addChildren({
+                title: "New node",
+                isNew: true
+                });
+                node.setExpanded();
+                refNode.editStart();
+                break;
+            case "addSibling":
+                refNode = node.getParent().addChildren({
+                title: "New node",
+                isNew: true
+                }, node.getNextSibling());
+                refNode.editStart();
+                break;
+            case "cut":
+                CLIPBOARD = {mode: data.cmd, data: node};
+                break;
+            case "copy":
+                CLIPBOARD = {
+                    mode: data.cmd,
+                    data: node.toDict(function(n){
+                      delete n.key;
+                    })
+                };
+                break;
+            case "clear":
+                CLIPBOARD = null;
+                break;
+            case "paste":
+                if( CLIPBOARD.mode === "cut" ) {
+                    // refNode = node.getPrevSibling();
+                    CLIPBOARD.data.moveTo(node, "child");
+                    CLIPBOARD.data.setActive();
+                } else if( CLIPBOARD.mode === "copy" ) {
+                    node.addChildren(CLIPBOARD.data).setActive();
+                }
+                break;
+            default:
+                alert("Unhandled command: " + data.cmd);
+                return;
+        }
+
+    }).on("keydown", function(e){
+        var c = String.fromCharCode(e.which),
+          cmd = null;
+
+        if( c === "N" && e.ctrlKey && e.shiftKey) {
+            cmd = "addChild";
+        } else if( c === "C" && e.ctrlKey ) {
+            cmd = "copy";
+        } else if( c === "V" && e.ctrlKey ) {
+            cmd = "paste";
+        } else if( c === "X" && e.ctrlKey ) {
+            cmd = "cut";
+        } else if( c === "N" && e.ctrlKey ) {
+            cmd = "addSibling";
+        } else if( e.which === $.ui.keyCode.DELETE ) {
+            cmd = "remove";
+        } else if( e.which === $.ui.keyCode.F2 ) {
+            cmd = "rename";
+        } else if( e.which === $.ui.keyCode.UP && e.ctrlKey ) {
+            cmd = "moveUp";
+        } else if( e.which === $.ui.keyCode.DOWN && e.ctrlKey ) {
+            cmd = "moveDown";
+        } else if( e.which === $.ui.keyCode.RIGHT && e.ctrlKey ) {
+            cmd = "indent";
+        } else if( e.which === $.ui.keyCode.LEFT && e.ctrlKey ) {
+            cmd = "outdent";
+        }
+        if( cmd ){
+            $(this).trigger("nodeCommand", {cmd: cmd});
+            return false;
+        }
     });
 
-    // custom field table
-    $('#custom_add_btn').click(function(){
-        //alert('click');
-        addTableRow($('#customTable'));
-        return false;
-    });
-
-    $('#related_add_btn').click(function(){
-        //alert('click');
-        addTableRow($('#relatedTable'));
-        return false;
-    });
-
-    $('#component_add_btn').click(function(){
-        //alert('click');
-        addTableRow($('#componentTable'));
-        return false;
-    });
-
-    $('#mainCategory').change(function(){
-        setVisibleOptions();
+    $("#mainTree").contextmenu({
+        delegate: "span.fancytree-title",
+        menu: [
+            {title: "Edit", cmd: "rename", uiIcon: "ui-icon-pencil" },
+            {title: "Delete", cmd: "remove", uiIcon: "ui-icon-trash" },
+            {title: "----"},
+            {title: "New node", cmd: "addChild", uiIcon: "ui-icon-plus" },
+            {title: "New child node", cmd: "addChild", uiIcon: "ui-icon-arrowreturn-1-e" },
+            {title: "----"},
+            {title: "Cut", cmd: "cut", uiIcon: "ui-icon-scissors"},
+            {title: "Copy", cmd: "copy", uiIcon: "ui-icon-copy"},
+            {title: "Paste", cmd: "paste", uiIcon: "ui-icon-clipboard", disabled: true }
+            ],
+        beforeOpen: function(event, ui) {
+            var node = $.ui.fancytree.getNode(ui.target);
+            $("#tree").contextmenu("enableEntry", "paste", !!CLIPBOARD);
+            node.setActive();
+        },
+        select: function(event, ui) {
+            var that = this;
+            // delay the event, so the menu can close and the click event does
+            // not interfere with the edit control
+            setTimeout(function(){
+                $(that).trigger("nodeCommand", {cmd: ui.cmd});
+            }, 100);
+        }
     });
 
 });

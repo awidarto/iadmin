@@ -86,6 +86,11 @@ class BrochureController extends AdminController {
             'title' => 'required',
             'slug'=> 'required'
         );
+        /*
+        print_r(Input::get());
+
+        die();
+        */
 
         return parent::postEdit($id,$data);
     }
@@ -108,6 +113,9 @@ class BrochureController extends AdminController {
 
     public function beforeUpdate($id,$data)
     {
+        //print_r($data);
+        //die();
+
         $template = ($data['template'] == '')?Str::random(8):$data['template'];
 
         file_put_contents(public_path().'/themes/default/views/brochuretmpl/'.$template.'.blade.php', $data['body']);
@@ -149,6 +157,10 @@ class BrochureController extends AdminController {
     {
         $prop = Property::where('brchead','exists', true)->where('brchead','!=', '')->first()->toArray();
 
+        $tmpl = Template::where('type','brochure')->where('status','active')->first();
+
+        $template = $tmpl->template;
+
         //print_r($prop);
 
         //die();
@@ -161,14 +173,15 @@ class BrochureController extends AdminController {
         }else{
             //return PDF::loadView('print.brochure',array('prop'=>$prop))
             //    ->stream('download.pdf');
+            $tmpl = $tmpl->toArray();
 
             return PDF::loadView('brochuretmpl.'.$template, array('prop'=>$prop))
-                        ->setOption('margin-top', '0mm')
-                        ->setOption('margin-left', '0mm')
-                        ->setOption('margin-right', '0mm')
-                        ->setOption('margin-bottom', '0mm')
-                        ->setOption('dpi',200)
-                        ->setPaper('A4')
+                        ->setOption('margin-top', $tmpl['margin-top'])
+                        ->setOption('margin-left', $tmpl['margin-left'])
+                        ->setOption('margin-right', $tmpl['margin-right'])
+                        ->setOption('margin-bottom', $tmpl['margin-bottom'])
+                        ->setOption('dpi',$tmpl['dpi'])
+                        ->setPaper($tmpl['paper-size'])
                         ->stream($prop['propertyId'].'.pdf');
 
             //return PDF::html('print.brochure',array('prop' => $prop), 'download.pdf');
@@ -219,14 +232,15 @@ class BrochureController extends AdminController {
         }else{
             //return PDF::loadView('print.brochure',array('prop'=>$prop))
             //    ->stream('download.pdf');
+            $tmpl = $tmpl->toArray();
 
             return PDF::loadView('brochuretmpl.'.$template, array('prop'=>$prop))
-                        ->setOption('margin-top', '0mm')
-                        ->setOption('margin-left', '0mm')
-                        ->setOption('margin-right', '0mm')
-                        ->setOption('margin-bottom', '0mm')
-                        ->setOption('dpi',200)
-                        ->setPaper('A4')
+                        ->setOption('margin-top', $tmpl['margin-top'])
+                        ->setOption('margin-left', $tmpl['margin-left'])
+                        ->setOption('margin-right', $tmpl['margin-right'])
+                        ->setOption('margin-bottom', $tmpl['margin-bottom'])
+                        ->setOption('dpi',$tmpl['dpi'])
+                        ->setPaper($tmpl['paper-size'])
                         ->stream($prop['propertyId'].'.pdf');
 
             //return PDF::html('print.brochure',array('prop' => $prop), 'download.pdf');

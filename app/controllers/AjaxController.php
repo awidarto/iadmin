@@ -43,6 +43,74 @@ class AjaxController extends BaseController {
 
     }
 
+    public function getMenu()
+    {
+        $tree = '[
+                    {"title": "Books & Audible", "expanded": true, "folder": true, "children": [
+                        {"title": "Books", "folder": true, "children": [
+                            {"title": "Books"},
+                            {"title": "Kindle Books"},
+                            {"title": "Books For Study"},
+                            {"title": "Audiobooks"}
+                        ]},
+                        {"title": "Movies, TV, Music, Games", "folder": true, "children": [
+                            {"title": "Music"},
+                            {"title": "MP3 Downloads"},
+                            {"title": "Musical Instruments & DJ"},
+                            {"title": "Film & TV"},
+                            {"title": "Ble-ray"},
+                            {"title": "PC & Video Games"}
+                        ]},
+                        {"title": "Electronics & Computers", "expanded": true, "folder": true, "children": [
+                            {"title": "Electronics", "folder": true, "children": [
+                                {"title": "Camera & Photo"},
+                                {"title": "TV & Home Cinema"},
+                                {"title": "Audio & HiFi"},
+                                {"title": "Sat Nav & Car Electronics"},
+                                {"title": "Phones"},
+                                {"title": "Electronic Accessories"}
+                            ]},
+                            {"title": "Computers", "folder": true, "children": [
+                                {"title": "Laptops"},
+                                {"title": "Tablets"},
+                                {"title": "Computer & Accessories"},
+                                {"title": "Computer Components"},
+                                {"title": "Software"},
+                                {"title": "Printers & Ink"}
+                            ]}
+                        ]}
+                    ]}
+                ]';
+
+        $tree = array(
+                    array('title'=>'Computers', 'folder'=>true, 'expanded'=>true,'children'=>array(
+                            array('title'=>'Laptops'),
+                            array('title'=>'Tablets'),
+                            array('title'=>'Computer & Accessories'),
+                            array('title'=>'Computer Components'),
+                            array('title'=>'Software'),
+                            array('title'=>'Printers & Ink')
+                        )
+                    ),
+                    array('title'=>'Electronics', 'folder'=>true, 'expanded'=>true,'children'=>array(
+                            array('title'=>'Camera & Photo'),
+                            array('title'=>'TV & Home Cinema'),
+                            array('title'=>'Audio & HiFi'),
+                            array('title'=>'Sat Nav & Car Electronics', 'folder'=>true, 'expanded'=>true,'children'=>array(
+                                    array('title'=>'Sat Phones'),
+                                    array('title'=>'GPS Navigator')
+                            ) ),
+                            array('title'=>'Phones'),
+                            array('title'=>'Electronic Accessories')
+                        )
+                    ),
+                );
+
+        //print $tree;
+
+        return Response::json($tree);
+    }
+
     public function postProductinfo(){
         $pid = Input::get('product_id');
 
