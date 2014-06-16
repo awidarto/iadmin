@@ -20,6 +20,9 @@
         {{ Former::select('category')->options(Prefs::getCategory()->catToSelection('title','title'))->label('Category') }}
         {{ Former::text('tags','Tags')->class('tag_keyword') }}
 
+        {{ Former::select('menu')->options( array_merge( array(''=>'None') ,Config::get('menu.topnav') )  )->label('Parent Menu') }}
+        {{ Former::text('menuSeq','Sequence / Priority')->class('span2') }}
+
         <?php
             $fupload = new Fupload();
         ?>

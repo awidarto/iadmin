@@ -18,5 +18,21 @@ return array(
                 'type'=>'text'
             ),
 
+        'brochure_default_name'=>array(
+                'label'=>'Brochure Default Name',
+                'value'=>'IA Admin',
+                'type'=>'text'
+            ),
+        'brochure_default_email'=>array(
+                'label'=>'Brochure Default Email',
+                'value'=>'admin@propinvestorsalliance.com',
+                'type'=>'text'
+            ),
+        'brochure_default_mobile'=>array(
+                'label'=>'Brochure Default Mobile',
+                'value'=>'+621123456789',
+                'type'=>'text'
+            ),
+
         )
     );

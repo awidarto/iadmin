@@ -36,6 +36,8 @@ class PagesController extends AdminController {
             array('Creator',array('search'=>true,'sort'=>false)),
             array('Category',array('search'=>true,'select'=>$categories,'sort'=>true)),
             array('Tags',array('search'=>true,'sort'=>true)),
+            array('Parent Menu',array('search'=>true,'sort'=>true)),
+            array('Menu Seq.',array('search'=>true,'sort'=>true)),
             array('Created',array('search'=>true,'sort'=>true,'date'=>true)),
             array('Last Update',array('search'=>true,'sort'=>true,'date'=>true)),
         );
@@ -54,6 +56,8 @@ class PagesController extends AdminController {
             array('creatorName',array('kind'=>'text','query'=>'like','pos'=>'both','show'=>true,'attr'=>array('class'=>'expander'))),
             array('category',array('kind'=>'text','query'=>'like','pos'=>'both','show'=>true)),
             array('tags',array('kind'=>'text','query'=>'like','pos'=>'both','show'=>true,'callback'=>'splitTag')),
+            array('menu',array('kind'=>'text','query'=>'like','pos'=>'both','show'=>true)),
+            array('menuSeq',array('kind'=>'text','query'=>'like','pos'=>'both','show'=>true)),
             array('createdDate',array('kind'=>'datetime','query'=>'like','pos'=>'both','show'=>true)),
             array('lastUpdate',array('kind'=>'datetime','query'=>'like','pos'=>'both','show'=>true)),
         );
