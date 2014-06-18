@@ -372,12 +372,9 @@ Route::get('regeneratepic',function(){
 
     $seq = new Sequence();
 
+    $sizes = Config::get('picture.sizes');
+
     foreach($props as $p){
-
-        $large_wm = public_path().'/wm/wm_lrg.png';
-        $med_wm = public_path().'/wm/wm_med.png';
-        $sm_wm = public_path().'/wm/wm_sm.png';
-
         $files = $p->files;
 
         foreach($files as $folder=>$files){
@@ -395,22 +392,18 @@ Route::get('regeneratepic',function(){
                                 $filename = $file;
 
                                 $thumbnail = Image::make($destinationPath.'/'.$filename)
-                                    ->fit(100,74)
-                                    //->insert($sm_wm,0,0, 'bottom-right')
+                                    ->fit( $sizes['thumbnail']['width'] ,$sizes['thumbnail']['height'])
                                     ->save($destinationPath.'/th_'.$filename);
 
                                 $medium = Image::make($destinationPath.'/'.$filename)
-                                    ->fit(320,240)
-                                    //->insert($med_wm,0,0, 'bottom-right')
+                                    ->fit( $sizes['medium']['width'] ,$sizes['medium']['height'])
                                     ->save($destinationPath.'/med_'.$filename);
 
                                 $large = Image::make($destinationPath.'/'.$filename)
-                                    ->fit(800,600)
-                                    ->insert($large_wm,15,15, 'bottom-right')
+                                    ->fit( $sizes['large']['width'] ,$sizes['large']['height'])
                                     ->save($destinationPath.'/lrg_'.$filename);
 
                                 $full = Image::make($destinationPath.'/'.$filename)
-                                    ->insert($large_wm,15,15, 'bottom-right')
                                     ->save($destinationPath.'/full_'.$filename);
 
                             }

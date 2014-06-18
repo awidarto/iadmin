@@ -153,6 +153,24 @@ class BrochureController extends AdminController {
         return Response::json(array('status'=>'OK'));
     }
 
+    public function postApply()
+    {
+        $in = Input::get();
+        $template = Template::find($in['id']);
+
+        if($template){
+            $template->body = $in['body'];
+            $tmplfile = $template->template;
+            if($template->save()){
+                file_put_contents(public_path().'/themes/default/views/brochuretmpl/'.$tmplfile.'.blade.php', $in['body']);
+            }
+            return Response::json(array('result'=>'OK'));
+        }else{
+            return Response::json(array('result'=>'FAILED'));
+        }
+
+    }
+
     public function getPreview($template,$type = null)
     {
         $prop = Property::where('brchead','exists', true)->where('brchead','!=', '')->first()->toArray();
@@ -167,15 +185,30 @@ class BrochureController extends AdminController {
 
         //return View::make('print.brochure')->with('prop',$prop)->render();
 
+        if(Auth::check()){
+            $contact['fullname'] = Options::get('brochure_default_name');
+            if(isset(Auth::user()->firstname)){
+                $contact['fullname'] = Auth::user()->firstname.' '.Auth::user()->lastname;
+            }else if(isset(Auth::user()->fullname)){
+                $contact['fullname'] = Auth::user()->fullname;
+            }
+            $contact['email'] = Auth::user()->email;
+            $contact['mobile'] = Auth::user()->mobile;
+        }else{
+            $contact['fullname'] = Options::get('brochure_default_name');
+            $contact['email'] = Options::get('brochure_default_email');
+            $contact['mobile'] = Options::get('brochure_default_mobile');
+        }
+
         if(!is_null($type) && $type != 'pdf'){
-            $content = View::make('brochuretmpl.'.$template)->with('prop',$prop)->render();
+            $content = View::make('brochuretmpl.'.$template)->with('prop',$prop)->with('contact',$contact)->render();
             return $content;
         }else{
             //return PDF::loadView('print.brochure',array('prop'=>$prop))
             //    ->stream('download.pdf');
             $tmpl = $tmpl->toArray();
 
-            return PDF::loadView('brochuretmpl.'.$template, array('prop'=>$prop))
+            return PDF::loadView('brochuretmpl.'.$template, array('prop'=>$prop,'contact'=>$contact))
                         ->setOption('margin-top', $tmpl['margin-top'])
                         ->setOption('margin-left', $tmpl['margin-left'])
                         ->setOption('margin-right', $tmpl['margin-right'])
@@ -220,6 +253,16 @@ class BrochureController extends AdminController {
 
         $prop['defaultpictures'] = $d;
 
+        if(Auth::check()){
+            $contact['fullname'] = Auth::user()->firstname.' '.Auth::user()->lastname;
+            $contact['email'] = Auth::user()->email;
+            $contact['mobile'] = Auth::user()->mobile;
+        }else{
+            $contact['fullname'] = Options::get('brochure_default_name');
+            $contact['email'] = Options::get('brochure_default_email');
+            $contact['mobile'] = Options::get('brochure_default_mobile');
+        }
+
         //print_r($prop);
 
         //die();
@@ -227,14 +270,14 @@ class BrochureController extends AdminController {
         //return View::make('print.brochure')->with('prop',$prop)->render();
 
         if(!is_null($type) && $type != 'pdf'){
-            $content = View::make('brochuretmpl.'.$template)->with('prop',$prop)->render();
+            $content = View::make('brochuretmpl.'.$template)->with('prop',$prop)->with('contact',$contact)->render();
             return $content;
         }else{
             //return PDF::loadView('print.brochure',array('prop'=>$prop))
             //    ->stream('download.pdf');
             $tmpl = $tmpl->toArray();
 
-            return PDF::loadView('brochuretmpl.'.$template, array('prop'=>$prop))
+            return PDF::loadView('brochuretmpl.'.$template, array('prop'=>$prop,'contact'=>$contact))
                         ->setOption('margin-top', $tmpl['margin-top'])
                         ->setOption('margin-left', $tmpl['margin-left'])
                         ->setOption('margin-right', $tmpl['margin-right'])
@@ -257,15 +300,25 @@ class BrochureController extends AdminController {
 
         $template = $tmpl->template;
 
+        if(Auth::check()){
+            $contact['fullname'] = Auth::user()->firstname.' '.Auth::user()->lastname;
+            $contact['email'] = Auth::user()->email;
+            $contact['mobile'] = Auth::user()->mobile;
+        }else{
+            $contact['fullname'] = Options::get('brochure_default_name');
+            $contact['email'] = Options::get('brochure_default_email');
+            $contact['mobile'] = Options::get('brochure_default_mobile');
+        }
+
         //$content = View::make('print.brochure')->with('prop',$prop)->render();
 
-        $brochurepdf = PDF::loadView('brochuretmpl.'.$template, array('prop'=>$prop))
-                        ->setOption('margin-top', '0mm')
-                        ->setOption('margin-left', '0mm')
-                        ->setOption('margin-right', '0mm')
-                        ->setOption('margin-bottom', '0mm')
-                        ->setOption('dpi',200)
-                        ->setPaper('A4')
+        $brochurepdf = PDF::loadView('brochuretmpl.'.$template, array('prop'=>$prop, 'contact'=>$contact))
+                        ->setOption('margin-top', $tmpl['margin-top'])
+                        ->setOption('margin-left', $tmpl['margin-left'])
+                        ->setOption('margin-right', $tmpl['margin-right'])
+                        ->setOption('margin-bottom', $tmpl['margin-bottom'])
+                        ->setOption('dpi',$tmpl['dpi'])
+                        ->setPaper($tmpl['paper-size'])
                         ->output();
 
         file_put_contents(public_path().'/storage/pdf/'.$prop['propertyId'].'.pdf', $brochurepdf);

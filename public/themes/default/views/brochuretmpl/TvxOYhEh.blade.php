@@ -56,11 +56,14 @@
 
     .contact-box{
         background-color: #ddd;
-        background-blend-mode: transparent;
-        height: 225px;
         padding: 8px;
         margin-left: 10px;
         border: thin solid #ccc;
+    }
+    
+    #map-box{
+        margin-left: 10px;
+        border: thin solid #ccc;        
     }
 
     .head-container{
@@ -71,9 +74,15 @@
     }
 
     .disclaimer{
-        font-size: 6px;
+        font-size: 11px;
         padding:8px;
         text-alignment:justify;
+    }
+    
+    .license{
+        padding:8px;
+        padding-top:20px;
+        text-alignment:justify;   
     }
 </style>
     {{-- print_r($prop['defaultpictures']) --}}
@@ -183,6 +192,11 @@
                     </table>
                 </div>
                 <div class="span6" style="padding-right:10px;" >
+
+                </div>
+            </div>
+            <div class="row-fluid" >
+                <div class="span6">
                                 <?php
 
                                     $address = $prop['number'].' '.$prop['address'].' '.$prop['city'].' '.$prop['state'].' '.$prop['zipCode'];
@@ -195,19 +209,18 @@
                                     }
                                     $address_url = urlencode($address);
                                 ?>
+                                <div id="map-box" style="display:inline-block">
+                                
                                 <img src="http://maps.googleapis.com/maps/api/staticmap?center={{ $address_url }}&zoom=13&size=400x250&maptype=roadmap&markers=color:{{ $color }}%7Clabel:{{ $label }}%7C{{ $address_url }}&sensor=false" style="float:left;border:thin solid #ccc;"/>
-
-                </div>
-            </div>
-            <div class="row-fluid" >
-                <div class="span6">
+                                </div>
                     <div class="contact-box"" >
                         <p style="font-weight:bold">
-                        Please contact:<br /><br />{{ $contact['fullname'] }} at {{ $contact['email'] }} or call {{ $contact['mobile']}}.
+                        Please contact:<br />{{ $contact['fullname'] }}<br />at {{ $contact['email'] }} or call {{ $contact['mobile']}}.
                         </p>
                     </div>
+
                 </div>
-                <div class="span6">
+                <div class="span6 disclaimer">
                     <p>
                         Disclaimer - While every effort is made to ensure that this information is accurate and conforms with all applicable legal requirements it is supplied in good faith as an aid to users. Investors Alliance do not warrant that it is complete, comprehensive or accurate, or commit to its being updated. In no event shall Investors Alliance be liable for any incidental, indirect, consequential or special damages of any kind, or any damages whatsoever, including, without limitation, those resulting from loss of profit, loss of contracts, goodwill, data, information, income, expected savings or business relationships, whether or not advised of the possibility of such damage, arising out of or in connection with the use of this information.
                     </p>
@@ -217,7 +230,7 @@
                 </div>
             </div>
             <div class="row-fluid">
-                <div class="span12 disclaimer">
+                <div class="span12 license">
                     <p>
                         Investors Alliance is a Trading Name of Terra Rossa, LLC with registered office in 125 East Main St #350 American Fork, UT 84003 USA. Each Office is independently owned and operated.
                     </p>

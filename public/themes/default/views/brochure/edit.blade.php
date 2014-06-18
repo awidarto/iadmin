@@ -7,7 +7,7 @@
 
 {{Former::open_for_files_vertical($submit,'POST',array('class'=>'custom addAttendeeForm'))}}
 
-{{ Former::hidden('id')->value($formdata['_id']) }}
+{{ Former::hidden('id')->id('_id')->value($formdata['_id']) }}
 
 {{ Former::hidden('template')->value($formdata['template']) }}
 
@@ -17,6 +17,7 @@
     </div>
     <div class="span3">
         <a href="{{ URL::to('brochure/preview/'.$formdata['template'].'/pdf')}}" class="btn" target="blank">PDF Preview</a>
+        <a class="btn" id="apply-btn" >Apply</a>
         {{ Former::select('status')->options(array('inactive'=>'Inactive','active'=>'Active'))->label('Status') }}
         {{ Former::text('title','Title') }}
         {{ Former::text('slug','Permalink')->id('permalink') }}
@@ -90,6 +91,21 @@ $(document).ready(function() {
     });
 
     $('.code').ace({ theme: 'twilight', lang: 'php' });
+
+    $('#apply-btn').on('click',function(){
+        $.post( '{{ URL::to('brochure/apply')}}',
+                {
+                    'id': $('#_id').val(),
+                    'body': $('#body').val()
+                },
+                function(data){
+                    if(data.result == 'OK'){
+                        alert('Changes applied');
+                    }
+                }, 'json'
+            );
+    });
+
     /*
     $('#body').summernote({
         height:'600px',
