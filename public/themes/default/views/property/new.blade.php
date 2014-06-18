@@ -185,6 +185,9 @@
 
         {{ Former::textarea('specialConditionRemarks','Special Condition Remarks (Admin Only)')->class('span10')->rows(8) }}
 
+        {{ Former::text('videoUrl','Video')->help('Full video URL') }}
+        {{ Former::text('videoId','Youtube Video ID')->help('ID of Youtube Video ID') }}
+
         <?php
             $fupload = new Fupload();
         ?>
