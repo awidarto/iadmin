@@ -38,6 +38,8 @@
 
         {{ Former::select('role')->options(Config::get('kickstart.admin_roles'))->label('Role')}}
 
+        {{ Former::select('showContact')->options(array('no'=>'No','yes'=>'Yes'))->label('Show Contact in Printables') }}
+
     </div>
 </div>
 

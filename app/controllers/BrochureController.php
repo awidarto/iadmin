@@ -253,14 +253,20 @@ class BrochureController extends AdminController {
 
         $prop['defaultpictures'] = $d;
 
-        if(Auth::check()){
-            $contact['fullname'] = Auth::user()->firstname.' '.Auth::user()->lastname;
+        if(Auth::check() && ( isset(Auth::user()->showContact) && Auth::user()->showContact == 'yes') ){
+            if(isset(Auth::user()->firstname)){
+                $contact['fullname'] = Auth::user()->firstname.' '.Auth::user()->lastname;
+            }else if( isset(Auth::user()->fullname)){
+                $contact['fullname'] = Auth::user()->fullname;
+            }else{
+                $contact['fullname'] = '';
+            }
             $contact['email'] = Auth::user()->email;
             $contact['mobile'] = Auth::user()->mobile;
         }else{
-            $contact['fullname'] = Options::get('brochure_default_name');
-            $contact['email'] = Options::get('brochure_default_email');
-            $contact['mobile'] = Options::get('brochure_default_mobile');
+            $contact['fullname'] = '';
+            $contact['email'] = '';
+            $contact['mobile'] = '';
         }
 
         //print_r($prop);
