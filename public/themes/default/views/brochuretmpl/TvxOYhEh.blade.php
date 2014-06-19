@@ -61,6 +61,9 @@
         margin-right: 10px;
         border: thin solid #ccc;
         height:222px;
+        -webkit-border-radius: 8px;
+        -moz-border-radius: 8px;
+        border-radius: 8px;
     }
 
     #map-box{
