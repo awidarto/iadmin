@@ -269,7 +269,7 @@ class BrochureController extends AdminController {
             $contact['mobile'] = '';
         }
 
-        $rental = (double)$prop['annualRental'];
+        $rental = (double)$prop['monthlyRental'] * 12;
         $price = (double)$prop['listingPrice'];
         $year = 3;
 
