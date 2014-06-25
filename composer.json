@@ -13,7 +13,7 @@
         "intervention/helper": "dev-master",
         "intervention/validation": "dev-master",
         "maatwebsite/excel": "1.*",
-        "alexwhitman/view-themes": "dev-master",
+        "alexwhitman/view-themes": "1.1.2",
         "barryvdh/laravel-dompdf": "dev-master",
         "knplabs/knp-snappy": "*",
         "barryvdh/laravel-snappy": "dev-master",

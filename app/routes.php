@@ -103,6 +103,43 @@ Route::get('regenerate',function(){
 
 });
 
+Route::get('proi',function(){
+    $price = 100000;
+    $pct = 3;
+    $year = 5;
+    $roi = 0;
+    $initprice = $price;
+    $rental = 1000;
+
+    $counter = $year;
+
+    $result = 0;
+
+    $projected = px($price, $pct, $year,$initprice,$rental ,$roi, $counter, $result);
+
+    print 'projected ROI : '.$result;
+
+
+});
+
+function px($price, $pct, $year, $initprice,$rental ,$roi, $counter, &$result){
+    if($counter == 0){
+        return $roi;
+    }else{
+        $price = $price + ($price * ( $pct / 100));
+        $counter--;
+        $rental = $rental + $rental;
+
+        $roi = (($price - $initprice) + $rental )/ $initprice;
+
+        $result = $roi;
+
+        print $price.' '.number_format($roi * 100, 1,'.',',').'%<br />';
+
+        px($price, $pct, $year, $initprice, $rental, $roi ,$counter, $result);
+    }
+}
+
 Route::get('fillprin/{prid}',function($prid){
     //$principal = '5344ea11ccae5b6f13000004';
     $principal = $prid;
