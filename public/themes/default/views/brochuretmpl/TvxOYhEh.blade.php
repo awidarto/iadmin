@@ -45,22 +45,43 @@
     }
 
     table{
-        font-size: 14px;
+        font-size: 12px;
         font-family: Arial,Helvetica, sans-serif;
         width: 100%;
+        border-collapse:collapse;
+        border-spacing:0;
+    }
+
+    .table th, .table td{
+        line-height:18px;
+        padding:2px 5px;
     }
 
     th.item{
         text-align: left;
         vertical-align: top;
+        padding-left: 5px;
+    }
+
+    thead th{
+        padding-left: 5px;
+    }
+
+    thead th.header{
+        line-height: 24px;
+        font-weight: bolder;
+    }
+
+    thead{
+        background-color:powderblue;
     }
 
     .contact-box{
-        background-color: #ddd;
+        background-color: #dce6f2;
         padding: 8px;
         margin-right: 10px;
-        border: thin solid #ccc;
-        height:222px;
+        border: thin solid #95b3d7;
+        height:175px;
         -webkit-border-radius: 8px;
         -moz-border-radius: 8px;
         border-radius: 8px;
@@ -77,6 +98,11 @@
         overflow:hidden;
         height:450px;
         margin-bottom:5px;
+        padding:0px;
+    }
+
+    .head-container img{
+        width:101%;
     }
 
     .disclaimer{
@@ -97,15 +123,70 @@
     .row-fluid span.title-span{
         min-height:none;
     }
+
+    img#ia-motto{
+        margin-top: 300px;
+    }
+
+    .rounded{
+        background-color: #dce6f2;
+        border: thin solid #95b3d7;
+        -webkit-border-radius: 8px;
+        -moz-border-radius: 8px;
+        border-radius: 8px;
+    }
+
+    .table-bordered{
+        border: thin solid #95b3d7;
+        background-color: #dce6f2;
+        -webkit-border-radius: 8px;
+        -moz-border-radius: 8px;
+        border-radius: 8px;
+    }
+
+    .table-bordered th,
+    .table-bordered td{
+        border:none;
+    }
+
+
+    .table-bordered thead:first-child tr:first-child > th:last-child,
+    .table-bordered tbody:first-child tr:first-child > td:last-child,
+    .table-bordered tbody:first-child tr:first-child > th:last-child{
+        -webkit-border-top-right-radius: 8px;
+        -moz-border-top-right-radius: 8px;
+        border-top-right-radius: 8px;
+    }
+
+    .table-bordered thead:last-child tr:last-child > th:first-child,
+    .table-bordered tbody:last-child tr:last-child > td:first-child,
+    .table-bordered tbody:last-child tr:last-child > th:first-child,
+    .table-bordered tfoot:last-child tr:last-child > td:first-child,
+    .table-bordered tfoot:last-child tr:last-child > th:first-child{
+        -webkit-border-bottom-left-radius: 8px;
+        -moz-border-bottom-left-radius: 8px;
+        border-bottom-left-radius: 8px;
+    }
+
+    .table-bordered thead:last-child tr:last-child > th:last-child,
+    .table-bordered tbody:last-child tr:last-child > td:last-child,
+    .table-bordered tbody:last-child tr:last-child > th:last-child,
+    .table-bordered tfoot:last-child tr:last-child > td:last-child,
+    .table-bordered tfoot:last-child tr:last-child > th:last-child{
+        -webkit-border-bottom-right-radius: 8px;
+        -moz-border-bottom-right-radius: 8px;
+        border-bottom-right-radius: 8px;
+    }
 </style>
     {{-- print_r($prop['defaultpictures']) --}}
     <div class="row-fluid">
         <div class="span2" id="side-bar">
             {{ HTML::image('images/v-ialogo-med.png')}}
+            {{ HTML::image('images/v-iamotto-med.png','IA Motto',array('id'=>'ia-motto','style'=>'margin-top:310px;margin-left:50px;'))}}
         </div>
         <div class="span10" id="broc-content" >
             <div class="head-container">
-                {{ HTML::image($prop['defaultpictures']['brchead'])}}
+                {{ HTML::image($prop['defaultpictures']['brchead'],'Head Image',array('style="width:100%;"') )}}
             </div>
             <div class="row-fluid">
                 <div class="span4">
@@ -126,18 +207,22 @@
             </div>
             <div class="row-fluid">
                 <div class="span6">
-                    <table style="margin:0px;margin-top:10px;margin-left:8px" >
-                        <thead>
+                    <table class="table table-bordered" style="width:385px;margin:0px;margin-top:10px;margin-bottom:8px;margin-left:8px;height:310px;" >
+                        <thead >
                             <tr>
-                                <th colspan="2" class="header" style="text-align:left;font-size:16px;font-weight:normal;">
+                                <th colspan="2" class="header" style="text-align:left;font-size:16px;">
                                     Property Info
                                 </th>
                             </tr>
                         </thead>
-                        <tbody>
+                        <tbody class="rounded" >
                             <tr>
                                 <th class="item">ID</th>
                                 <td>{{ $prop['propertyId'] }}</td>
+                            </tr>
+                            <tr>
+                                <th class="item">Purchase Price</th>
+                                <td>{{ Ks::usd($prop['listingPrice']) }}</td>
                             </tr>
                             <tr>
                                 <th class="item">Address</th>
@@ -147,10 +232,6 @@
                                 </td>
                             </tr>
                             {{--
-                            <tr>
-                                <th class="item">Price</th>
-                                <td>{{ Ks::usd($prop['listingPrice']) }}</td>
-                            </tr>
                             <tr>
                                 <th class="item">Monthly Rent</th>
                                 <td>{{ Ks::usd($prop['monthlyRental'])}}</td>
@@ -162,7 +243,7 @@
 
                             --}}
                             <tr>
-                                <th class="item" style="width:50%" >Type</th>
+                                <th class="item">Type</th>
                                 <td>{{ $prop['type']}}</td>
                             </tr>
                             <tr>
@@ -178,7 +259,7 @@
                                 <td>{{ $prop['yearBuilt']}}</td>
                             </tr>
                             <tr>
-                                <th class="item">Size</th>
+                                <th class="item">Building Size</th>
                                 <td>{{ number_format($prop['houseSize'],0) }} sqft.</td>
                             </tr>
                             <tr>
@@ -189,6 +270,13 @@
                                     @else
                                         {{ number_format($prop['lotSize'],0, '.',',') }} sqft
                                     @endif
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <th class="item">Average $/sqft</th>
+                                <td>
+                                    ${{ Ks::us($prop['listingPrice']/$prop['houseSize']) }}/sqft
                                 </td>
                             </tr>
                             <tr>
@@ -216,15 +304,15 @@
                 </div>
                 <div class="span6" style="padding-right:10px;padding-top:10px;" >
 
-                    <table style="width:100%;margin-bottom:0px;">
-                        <thead>
+                    <table class="table table-bordered" style="width:380px;margin-bottom:8px;height:310px;">
+                        <thead >
                             <tr>
-                                <th colspan="2" class="header" style="text-align:left;font-size:16px;font-weight:normal;">
+                                <th colspan="2" class="header" style="text-align:left;font-size:16px;">
                                     Financial Info
                                 </th>
                             </tr>
                         </thead>
-                        <tbody>
+                        <tbody class="rounded" >
                             <?php
                                 $annualRental = 12*$prop['monthlyRental'];
                                 $propManagementFee = $annualRental * 0.1;
@@ -239,6 +327,9 @@
                                 $roi = ($netAnnualCashFlow / $prop['listingPrice']) * 100;
                                 $roi = round($roi, 1, PHP_ROUND_HALF_UP);
 
+                                $roi3 = round($roi3 * 100, 1, PHP_ROUND_HALF_UP);
+                                $roi5 = round($roi5 * 100, 1, PHP_ROUND_HALF_UP);
+
                             ?>
                             <tr>
                                 <th class="item" >Purchase Price</th><td>${{ Ks::us( $prop['listingPrice'])}}</td>
@@ -250,20 +341,21 @@
                                 <th class="item" >Annual Rent</th><td id="txt_annualRental">${{ Ks::us($annualRental) }}</td>
                             </tr>
                             <tr>
-                                <th colspan="2" style="text-align:left;font-style:italic;border-bottom:thin solid #ddd;">Annual Expenses</th>
+                                <th class="item" colspan="2" style="text-align:left;font-style:italic;">Annual Expenses</th>
                             </tr>
                             <tr>
-                                <th class="item" >Taxes*</th><td>{{str_replace(array(',','.'),'',$prop['tax']) }}</td>
+                                <th class="item" >Taxes <span style="font-weight:normal;" >(estimated)</span></th><td>${{ Ks::us($prop['tax'] ) }}</td>
                             </tr>
                             <tr>
-                                <th class="item" >Insurance**</th><td>{{$prop['insurance']}}</td>
+                                <th class="item" >Insurance <span style="font-weight:normal;" >(estimated)</span></th><td>${{ Ks::us($prop['insurance'])}}</td>
                             </tr>
                             <tr>
-                                <th class="item" >Property Management</th><td><span class="pull-left" >10%</span> <span id="propManagementFee">{{ Ks::usd($propManagementFee)}}</span></td>
+                                <th class="item" >Property Management <span style="font-weight:normal;" >(10%)</span></th><td><span id="propManagementFee">{{ Ks::us($propManagementFee)}}</span></td>
                             </tr>
                             <tr>
-                                <th class="item" >HOA</th><td><span class="pull-left" >{{ number_format( ($prop['HOA'] / 12) , 1, '.', '') }}</span> <span>{{ $prop['HOA'] }}</span></td>
+                                <th class="item" >HOA</th><td><span>{{ Ks::usd($prop['HOA']) }}</span></td>
                             </tr>
+                            {{--
 
                             <tr>
                                 <th class="item" >Maintenance Allowance</th><td><span id="maintenanceAllowance">${{ Ks::us($maintenanceAllowance) }}</span></td>
@@ -272,19 +364,23 @@
                                 <th class="item" >Vacancy Allowance</th><td><span id="vacancyAllowance">${{ Ks::us($vacancyAllowance)}}</span></td>
                             </tr>
 
+                            --}}
+
                             <tr>
-                                <th style="text-align:left;font-style:italic;border-bottom:thin solid #ddd;">Total Expenses</th><td id="totalExpense" style="border-bottom:thin solid #ddd;" >${{ Ks::us($totalExpense) }}</td>
+                                <th class="item"  style="text-align:left;font-style:italic;border-bottom:none;">Total Expenses</th><td id="totalExpense" style="border-bottom:none;" >${{ Ks::us($totalExpense) }}</td>
                             </tr>
                             <tr>
                                 <th class="item" >Net Annual Cash Flow</th><td id="netAnnualCashFlow">${{ Ks::us($netAnnualCashFlow) }}</td>
                             </tr>
+                            <tr>
+                                <th class="item" >Net Monthly Cash Flow</th><td id="netAnnualCashFlow">${{ Ks::us($netAnnualCashFlow / 12 ) }}</td>
+                            </tr>
                             <tr class="yield">
-                                <th class="item" >Net Rental Return</th><td id="calcROI">{{ $roi }}%</td>
+                                <th class="item" >Net Annual Rental Return</th><td id="calcROI" style="font-weight:bold;">{{ $roi }}%</td>
                             </tr>
                         </tbody>
 
                     </table>
-                    <p class="disclaimer">*&nbsp;&nbsp; Approximately to latest current year available<br />** Approximately</p>
 
                 </div>
             </div>
@@ -304,24 +400,48 @@
                                 ?>
                                 <div id="map-box" style="display:inline-block">
 
-                                <img src="http://maps.googleapis.com/maps/api/staticmap?center={{ $address_url }}&zoom=13&size=400x250&maptype=roadmap&markers=color:{{ $color }}%7Clabel:{{ $label }}%7C{{ $address_url }}&sensor=false" style="float:left;border:thin solid #ccc;"/>
+                                <img src="http://maps.googleapis.com/maps/api/staticmap?center={{ $address_url }}&zoom=13&size=400x245&maptype=roadmap&markers=color:{{ $color }}%7Clabel:{{ $label }}%7C{{ $address_url }}&sensor=false" style="float:left;border:thin solid #ccc;"/>
                                 </div>
 
                 </div>
                 <div class="span6">
-                    <div class="contact-box"" >
-                        <p style="font-weight:bold">
+                        <table class="table table-bordered" style="width:380px;margin-bottom:8px;">
+                        <thead >
+                            <tr>
+                                <th colspan="2" class="header" style="text-align:left;font-size:16px;">
+                                    Projected ROI
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody class="rounded" >
+                            <tr class="yield">
+                                <th class="item" >3 Years with 3% Return Rate</th><td id="calcROI" style="font-weight:bold;">{{ $roi3 }}%</td>
+                            </tr>
+                            <tr class="yield">
+                                <th class="item" >3 Years with 5% Return Rate</th><td id="calcROI" style="font-weight:bold;">{{ $roi5  }}%</td>
+                            </tr>
+                        </tbody>
+
+                    </table>
+
+                    <div class="contact-box" style="position:relative">
                             @if( $contact['fullname'].$contact['email'].$contact['mobile'] != '')
-                                Please contact:<br />{{ $contact['fullname'] }}<br />at {{ $contact['email'] }} or call {{ $contact['mobile']}}.
+                                <p style="font-weight:bold">
+                                        Please contact:<br />{{ $contact['fullname'] }}<br />at {{ $contact['email'] }} or call {{ $contact['mobile']}}.
+                                </p>
                             @endif
-                        </p>
+                            <div style="position:absolute;bottom:0px;display:block;">
+                                <p style="color:red;font-weight:bold;font-size:10px;text-align:center;padding-right:15px;padding-left:15px;line-height:14px;font-style:italic;">
+                                        The greatest compliment you can pay me is to refer my services onto one of your associates.
+                                </p>
+                            </div>
                     </div>
                 </div>
             </div>
             <div class="row-fluid">
                 <div class="span12 disclaimer">
                     <p>
-                        Disclaimer - While every effort is made to ensure that this information is accurate and conforms with all applicable legal requirements it is supplied in good faith as an aid to users. Investors Alliance do not warrant that it is complete, comprehensive or accurate, or commit to its being updated. In no event shall Investors Alliance be liable for any incidental, indirect, consequential or special damages of any kind, or any damages whatsoever, including, without limitation, those resulting from loss of profit, loss of contracts, goodwill, data, information, income, expected savings or business relationships, whether or not advised of the possibility of such damage, arising out of or in connection with the use of this information.
+                        <b>Disclaimer</b> - While every effort is made to ensure that descriptions of properties, homes, locations or developments particulars, financials, market value, rents, tax, insurance, management fees, HOA fees, return on investment, specifications and pictures of any property, home, building, location or development are given in good faith and believed to be correct, but they do not form part of any offer or solicitation and are intended only as a general guide. Investors Alliance does not warrant that it is complete, comprehensive or accurate, or commit to its being updated. In no event shall Investors Alliance be liable for any incidental, indirect, consequential or special damages of any kind, or any damages whatsoever, including, without limitation, those resulting from loss of profit, loss of contracts, goodwill, data, information, income or expected savings, whether or not advised of the possibility of such damage, arising out of or in connection with the use of this information. In all cases Investors Alliance informs "buyers beware". This is real estate and with it carries inherent risks that you must accept and seek your own legal advice for each purchase.
                     </p>
                 </div>
             </div>

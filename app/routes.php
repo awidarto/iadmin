@@ -129,13 +129,8 @@ function px($price, $pct, $year, $initprice,$rental ,$roi, $counter, &$result){
         $price = $price + ($price * ( $pct / 100));
         $counter--;
         $rental = $rental + $rental;
-
         $roi = (($price - $initprice) + $rental )/ $initprice;
-
         $result = $roi;
-
-        print $price.' '.number_format($roi * 100, 1,'.',',').'%<br />';
-
         px($price, $pct, $year, $initprice, $rental, $roi ,$counter, $result);
     }
 }

@@ -269,21 +269,45 @@ class BrochureController extends AdminController {
             $contact['mobile'] = '';
         }
 
-        //print_r($prop);
+        $rental = (double)$prop['annualRental'];
+        $price = (double)$prop['listingPrice'];
+        $year = 3;
 
-        //die();
+        $roi = 0;
+        $initprice = $price;
+        $counter = $year;
+        $result = 0;
+        $pct = 3;
 
-        //return View::make('print.brochure')->with('prop',$prop)->render();
+        $projected = px($price, $pct, $year,$initprice,$rental ,$roi, $counter, $result);
+
+        $roi3 = $result;
+        //print 'projected ROI : '.$result;
+
+        $pct = 5;
+
+        $roi = 0;
+        $initprice = $price;
+        $counter = $year;
+        $result = 0;
+        $projected = px($price, $pct, $year,$initprice,$rental ,$roi, $counter, $result);
+
+        $roi5 = $result;
+        //print 'projected ROI : '.$result;
 
         if(!is_null($type) && $type != 'pdf'){
-            $content = View::make('brochuretmpl.'.$template)->with('prop',$prop)->with('contact',$contact)->render();
+            $content = View::make('brochuretmpl.'.$template)
+                ->with('roi3',$roi3)
+                ->with('roi5',$roi5)
+                ->with('prop',$prop)
+                ->with('contact',$contact)->render();
             return $content;
         }else{
             //return PDF::loadView('print.brochure',array('prop'=>$prop))
             //    ->stream('download.pdf');
             $tmpl = $tmpl->toArray();
 
-            return PDF::loadView('brochuretmpl.'.$template, array('prop'=>$prop,'contact'=>$contact))
+            return PDF::loadView('brochuretmpl.'.$template, array('prop'=>$prop,'contact'=>$contact,'roi3'=>$roi3,'roi5'=>$roi5))
                         ->setOption('margin-top', $tmpl['margin-top'])
                         ->setOption('margin-left', $tmpl['margin-left'])
                         ->setOption('margin-right', $tmpl['margin-right'])
@@ -295,6 +319,24 @@ class BrochureController extends AdminController {
             //return PDF::html('print.brochure',array('prop' => $prop), 'download.pdf');
         }
 
+    }
+
+    function px($price, $pct, $year, $initprice,$rental ,$roi, $counter, &$result){
+        if($counter == 0){
+            return $roi;
+        }else{
+            $price = $price + ($price * ( $pct / 100));
+            $counter--;
+            $rental = $rental + $rental;
+
+            $roi = (($price - $initprice) + $rental )/ $initprice;
+
+            $result = $roi;
+
+            //print $price.' '.number_format($roi * 100, 1,'.',',').'%<br />';
+
+            px($price, $pct, $year, $initprice, $rental, $roi ,$counter, $result);
+        }
     }
 
     public function getMail($id)
