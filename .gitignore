@@ -1,7 +1,7 @@
 /bootstrap/compiled.php
 /vendor
 /public/storage
-/public/themes/default/views/brochuretmpl/*
+public/themes/default/views/brochuretmpl/*
 public/themes/default/views/newslettertmpl/*
 composer.phar
 composer.lock
