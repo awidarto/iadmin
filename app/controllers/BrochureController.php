@@ -184,31 +184,61 @@ class BrochureController extends AdminController {
         //die();
 
         //return View::make('print.brochure')->with('prop',$prop)->render();
-
-        if(Auth::check()){
-            $contact['fullname'] = Options::get('brochure_default_name');
+        if(Auth::check() && ( isset(Auth::user()->showContact) && Auth::user()->showContact == 'yes') ){
             if(isset(Auth::user()->firstname)){
                 $contact['fullname'] = Auth::user()->firstname.' '.Auth::user()->lastname;
-            }else if(isset(Auth::user()->fullname)){
+            }else if( isset(Auth::user()->fullname)){
                 $contact['fullname'] = Auth::user()->fullname;
+            }else{
+                $contact['fullname'] = '';
             }
             $contact['email'] = Auth::user()->email;
             $contact['mobile'] = Auth::user()->mobile;
         }else{
-            $contact['fullname'] = Options::get('brochure_default_name');
-            $contact['email'] = Options::get('brochure_default_email');
-            $contact['mobile'] = Options::get('brochure_default_mobile');
+            $contact['fullname'] = '';
+            $contact['email'] = '';
+            $contact['mobile'] = '';
         }
 
+        $rental = (double)$prop['monthlyRental'] * 12;
+        $price = (double)$prop['listingPrice'];
+        $year = 3;
+
+        $roi = 0;
+        $initprice = $price;
+        $counter = $year;
+        $result = 0;
+        $pct = 5;
+
+        $projected = px($price, $pct, $year,$initprice,$rental ,$roi, $counter, $result);
+
+        $roi3 = $result;
+        //print 'projected ROI : '.$result;
+
+        $pct = 10;
+
+        $roi = 0;
+        $initprice = $price;
+        $counter = $year;
+        $result = 0;
+        $projected = px($price, $pct, $year,$initprice,$rental ,$roi, $counter, $result);
+
+        $roi5 = $result;
+
+
         if(!is_null($type) && $type != 'pdf'){
-            $content = View::make('brochuretmpl.'.$template)->with('prop',$prop)->with('contact',$contact)->render();
+            $content = View::make('brochuretmpl.'.$template)->with('prop',$prop)
+                    ->with('roi3',$roi3)
+                    ->with('roi5',$roi5)
+                    ->with('contact',$contact)
+                    ->render();
             return $content;
         }else{
             //return PDF::loadView('print.brochure',array('prop'=>$prop))
             //    ->stream('download.pdf');
             $tmpl = $tmpl->toArray();
 
-            return PDF::loadView('brochuretmpl.'.$template, array('prop'=>$prop,'contact'=>$contact))
+            return PDF::loadView('brochuretmpl.'.$template, array('prop'=>$prop,'contact'=>$contact,'roi3'=>$roi3,'roi5'=>$roi5))
                         ->setOption('margin-top', $tmpl['margin-top'])
                         ->setOption('margin-left', $tmpl['margin-left'])
                         ->setOption('margin-right', $tmpl['margin-right'])
@@ -277,14 +307,14 @@ class BrochureController extends AdminController {
         $initprice = $price;
         $counter = $year;
         $result = 0;
-        $pct = 3;
+        $pct = 5;
 
         $projected = px($price, $pct, $year,$initprice,$rental ,$roi, $counter, $result);
 
         $roi3 = $result;
         //print 'projected ROI : '.$result;
 
-        $pct = 5;
+        $pct = 10;
 
         $roi = 0;
         $initprice = $price;

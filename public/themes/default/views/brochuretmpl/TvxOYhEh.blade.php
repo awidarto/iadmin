@@ -182,7 +182,7 @@
     <div class="row-fluid">
         <div class="span2" id="side-bar">
             {{ HTML::image('images/v-ialogo-med.png')}}
-            {{ HTML::image('images/v-iamotto-med.png','IA Motto',array('id'=>'ia-motto','style'=>'margin-top:310px;margin-left:50px;'))}}
+            {{ HTML::image('images/v-iamotto-med.png','IA Motto',array('id'=>'ia-motto','style'=>'margin-top:310px;'))}}
         </div>
         <div class="span10" id="broc-content" >
             <div class="head-container">
@@ -415,10 +415,10 @@
                         </thead>
                         <tbody class="rounded" >
                             <tr class="yield">
-                                <th class="item" >3 Years with 3% Return Rate</th><td id="calcROI" style="font-weight:bold;">{{ $roi3 }}%</td>
+                                <th class="item" >3 years with 5% return rate</th><td id="calcROI" style="font-weight:bold;">{{ $roi3 }}%</td>
                             </tr>
                             <tr class="yield">
-                                <th class="item" >3 Years with 5% Return Rate</th><td id="calcROI" style="font-weight:bold;">{{ $roi5  }}%</td>
+                                <th class="item" >3 Years with 10% return rate</th><td id="calcROI" style="font-weight:bold;">{{ $roi5  }}%</td>
                             </tr>
                         </tbody>
 

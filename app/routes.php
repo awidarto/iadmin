@@ -127,10 +127,25 @@ function px($price, $pct, $year, $initprice,$rental ,$roi, $counter, &$result){
         return $roi;
     }else{
         $price = $price + ($price * ( $pct / 100));
-        $counter--;
-        $rental = $rental + $rental;
-        $roi = (($price - $initprice) + $rental )/ $initprice;
+        $mult = ($year - $counter) + 1;
+        //$rental = $rental * $mult;
+
+        $roi = (($price - $initprice) + ( $rental * $mult ) )/ $initprice;
         $result = $roi;
+        /*
+        print_r(
+            array(
+                'price'=>$price,
+                'rental'=>$rental,
+                'roi'=>$roi,
+                'result'=>$result,
+                'counter'=>$counter,
+                'year'=>$year,
+                'mult'=>$mult
+                )
+            );
+        */
+        $counter--;
         px($price, $pct, $year, $initprice, $rental, $roi ,$counter, $result);
     }
 }
