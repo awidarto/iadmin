@@ -73,7 +73,7 @@
     }
 
     thead{
-        background-color:powderblue;
+        background-color:#00d3d4;
     }
 
     .contact-box{
@@ -129,7 +129,7 @@
     }
 
     .rounded{
-        background-color: #dce6f2;
+        background-color: #00ffff;
         border: thin solid #95b3d7;
         -webkit-border-radius: 8px;
         -moz-border-radius: 8px;
@@ -341,7 +341,7 @@
                                 <th class="item" >Annual Rent</th><td id="txt_annualRental">${{ Ks::us($annualRental) }}</td>
                             </tr>
                             <tr>
-                                <th class="item" colspan="2" style="text-align:left;font-style:italic;">Annual Expenses</th>
+                                <th class="item" colspan="2" style="text-align:left;font-style:italic;background-color:#00e8e9;">Annual Expenses</th>
                             </tr>
                             <tr>
                                 <th class="item" >Taxes <span style="font-weight:normal;" >(estimated)</span></th><td>${{ Ks::us($prop['tax'] ) }}</td>
@@ -367,7 +367,7 @@
                             --}}
 
                             <tr>
-                                <th class="item"  style="text-align:left;font-style:italic;border-bottom:none;">Total Expenses</th><td id="totalExpense" style="border-bottom:none;" >${{ Ks::us($totalExpense) }}</td>
+                                <th class="item"  style="text-align:left;font-style:italic;border-bottom:none;background-color:#00e8e9;">Total Expenses</th><td id="totalExpense" style="border-bottom:none;background-color:#00e8e9;" >${{ Ks::us($totalExpense) }}</td>
                             </tr>
                             <tr>
                                 <th class="item" >Net Annual Cash Flow</th><td id="netAnnualCashFlow">${{ Ks::us($netAnnualCashFlow) }}</td>

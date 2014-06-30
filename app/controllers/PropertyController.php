@@ -583,7 +583,7 @@ class PropertyController extends AdminController {
 
         $thumbnail_url = '';
 
-        if(isset($data['files']) && count($data['files']) && isset($data['defaultpic']) && $data['defaultpic'] != '' ){
+        if(isset($data['files']) && count($data['files']) && isset($data['defaultpic']) && $data['defaultpic'] != '' && $data['files'][$data['defaultpic']] ){
             $glinks = '';
 
             $gdata = $data['files'][$data['defaultpic']];
