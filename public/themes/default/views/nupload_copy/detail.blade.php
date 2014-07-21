@@ -16,17 +16,17 @@
     </tr>
     <tr>
         <td colspan="2">
-            <input type="radio" name="brc1" value="%s" %s > Slider 1
+            <input type="radio" name="brc1" value="%s" %s > Pic 1
         </td>
     </tr>
     <tr>
         <td colspan="2">
-            <input type="radio" name="brc2" value="%s" %s > Slider 2
+            <input type="radio" name="brc2" value="%s" %s > Pic 2
         </td>
     </tr>
     <tr>
         <td colspan="2">
-            <input type="radio" name="brc3" value="%s" %s > Slider 3
+            <input type="radio" name="brc3" value="%s" %s > Pic 3
         </td>
     </tr>
     <tr>

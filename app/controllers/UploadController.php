@@ -34,44 +34,118 @@ class UploadController extends Controller {
 
         $uploadSuccess = $file->move($destinationPath, $filename);
 
-        $ps = Config::get('picture.sizes');
+        $is_image = $this->isImage($filemime);
+        $is_audio = $this->isAudio($filemime);
+        $is_video = $this->isVideo($filemime);
+        $is_pdf = $this->isPdf($filemime);
 
-        $thumbnail = Image::make($destinationPath.'/'.$filename)
-            ->fit($ps['thumbnail']['width'],$ps['thumbnail']['height'])
-            //->insert($sm_wm,0,0, 'bottom-right')
-            ->save($destinationPath.'/th_'.$filename);
+        if(!($is_image || $is_audio || $is_video || $is_pdf)){
+            $is_doc = true;
+        }else{
+            $is_doc = false;
+        }
 
-        $medium = Image::make($destinationPath.'/'.$filename)
-            ->fit($ps['medium']['width'],$ps['medium']['height'])
-            //->insert($med_wm,0,0, 'bottom-right')
-            ->save($destinationPath.'/med_'.$filename);
+        if($is_image){
 
-        $large = Image::make($destinationPath.'/'.$filename)
-            ->fit($ps['large']['width'],$ps['large']['height'])
-            ->insert($large_wm, 'bottom-right',15,15)
-            ->save($destinationPath.'/lrg_'.$filename);
+            $ps = Config::get('picture.sizes');
 
-        $full = Image::make($destinationPath.'/'.$filename)
-            ->insert($large_wm, 'bottom-right',15,15)
-            ->save($destinationPath.'/full_'.$filename);
+            /*
+            $thumbnail = Image::make($destinationPath.'/'.$filename)
+                ->fit($ps['thumbnail']['width'],$ps['thumbnail']['height'])
+                //->insert($sm_wm,0,0, 'bottom-right')
+                ->save($destinationPath.'/th_'.$filename);
+
+            $medium = Image::make($destinationPath.'/'.$filename)
+                ->fit($ps['medium']['width'],$ps['medium']['height'])
+                //->insert($med_wm,0,0, 'bottom-right')
+                ->save($destinationPath.'/med_'.$filename);
+
+            $large = Image::make($destinationPath.'/'.$filename)
+                ->fit($ps['large']['width'],$ps['large']['height'])
+                ->insert($large_wm, 'bottom-right',15,15)
+                ->save($destinationPath.'/lrg_'.$filename);
+
+            $full = Image::make($destinationPath.'/'.$filename)
+                ->insert($large_wm, 'bottom-right',15,15)
+                ->save($destinationPath.'/full_'.$filename);
+
+            $image_size_array = array(
+                'thumbnail_url'=> URL::to('storage/media/'.$rstring.'/'.$ps['thumbnail']['prefix'].$filename),
+                'large_url'=> URL::to('storage/media/'.$rstring.'/'.$ps['large']['prefix'].$filename),
+                'medium_url'=> URL::to('storage/media/'.$rstring.'/'.$ps['medium']['prefix'].$filename),
+                'full_url'=> URL::to('storage/media/'.$rstring.'/'.$ps['full']['prefix'].$filename),
+            );
+            */
+
+            $image_size_array = array();
+
+            foreach($ps as $k=>$v){
+                if($v['wm'] == false){
+                    $thumbnail = Image::make($destinationPath.'/'.$filename)
+                        ->fit($v['width'],$v['height'])
+                        //->insert($sm_wm,0,0, 'bottom-right')
+                        ->save($destinationPath.'/'.$v['prefix'].$filename);
+                }else{
+                    $thumbnail = Image::make($destinationPath.'/'.$filename)
+                        ->fit($v['width'],$v['height'])
+                        ->insert(public_path().$v['wm'], $v['wmpos'], $v['wmx'], $v['wmy'])
+                        ->save($destinationPath.'/'.$v['prefix'].$filename);
+                }
+
+                $image_size_array[$k.'_url'] = URL::to('storage/media/'.$rstring.'/'.$v['prefix'].$filename);
+            }
+
+
+        }else{
+            if($is_audio){
+                $thumbnail_url = URL::to('images/audio.png');
+            }elseif($is_video){
+                $thumbnail_url = URL::to('images/video.png');
+            }elseif($is_pdf){
+                $thumbnail_url = URL::to('images/pdf.png');
+            }else{
+                $thumbnail_url = URL::to('images/doc.png');
+            }
+
+            $image_size_array = array(
+                'thumbnail_url'=> $thumbnail_url,
+                'large_url'=> '',
+                'medium_url'=> '',
+                'full_url'=> ''
+            );
+
+        }
 
         $fileitems = array();
 
         if($uploadSuccess){
-            $fileitems[] = array(
+            $item = array(
                     'url'=> URL::to('storage/media/'.$rstring.'/'.$filename),
+                    /*
                     'thumbnail_url'=> URL::to('storage/media/'.$rstring.'/'.$ps['thumbnail']['prefix'].$filename),
                     'large_url'=> URL::to('storage/media/'.$rstring.'/'.$ps['large']['prefix'].$filename),
                     'medium_url'=> URL::to('storage/media/'.$rstring.'/'.$ps['medium']['prefix'].$filename),
                     'full_url'=> URL::to('storage/media/'.$rstring.'/'.$ps['full']['prefix'].$filename),
+                    */
                     'temp_dir'=> $destinationPath,
                     'file_id'=> $rstring,
+                    'is_image'=>$is_image,
+                    'is_audio'=>$is_audio,
+                    'is_video'=>$is_video,
+                    'is_pdf'=>$is_pdf,
+                    'is_doc'=>$is_doc,
                     'name'=> $filename,
                     'type'=> $filemime,
                     'size'=> $filesize,
                     'delete_url'=> URL::to('storage/media/'.$rstring.'/'.$filename),
                     'delete_type'=> 'DELETE'
                 );
+
+            foreach($image_size_array as $k=>$v){
+                $item[$k] = $v;
+            }
+
+            $fileitems[] = $item;
 
         }
 
@@ -310,6 +384,22 @@ class UploadController extends Controller {
            return Response::json('error', 400);
         }
 
+    }
+
+    private function isAudio($mime){
+        return preg_match('/^audio/',$mime);
+    }
+
+    private function isVideo($mime){
+        return preg_match('/^video/',$mime);
+    }
+
+    private function isImage($mime){
+        return preg_match('/^image/',$mime);
+    }
+
+    private function isPdf($mime){
+        return preg_match('/pdf/',$mime);
     }
 
 
