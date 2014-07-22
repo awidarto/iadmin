@@ -1,3 +1,4 @@
+{{ HTML::script('js/zeroclipboard/ZeroClipboard.js') }}
 <div class="control-group">
     <label class="control-label" for="userfile">{{ $label }}</label>
     <div class="controls">
@@ -83,6 +84,7 @@
                             printf($thumb,
                                 $v['file_id'],
                                 $v['thumbnail_url'],
+                                $v['full_url'],
                                 $v['filename'],
                                 $v['file_id'],
                                 $v['file_id'],
@@ -104,6 +106,7 @@
 
                         $filename = $allin['filename'];
                         $thumbnail_url = $allin['thumbnail_url'];
+                        $full_url = $allin['full_url'];
                         $file_id = $allin['file_id'];
                         /*
                         $thumb = '<li><img style="width:125px;" src="%s"><span class="file_del icon-trash" id="%s"></span>';
@@ -179,6 +182,7 @@
                             printf($thumb,
                                 $file_id[$t],
                                 $thumbnail_url[$t],
+                                $full_url[$t],
                                 $filename[$t],
                                 $file_id[$t],
                                 $file_id[$t],
@@ -287,7 +291,7 @@
 </div>
 
 <style type="text/css">
-    .file_del{
+    .file_del, .file_copy{
         cursor: pointer;
     }
 </style>
@@ -297,6 +301,12 @@
 $(document).ready(function(){
 
     var url = '{{ URL::to($url) }}';
+
+    //ZeroClipboard.config( { swfPath: '{{ URL::to('js/zeroclipboard')}}/ZeroClipboard.swf' } );
+
+    var clip = new ZeroClipboard($('.file_copy').each(function(){ }),{
+        moviePath: '{{ URL::to('js/zeroclipboard')}}/ZeroClipboard.swf'
+    });
 
     $('#{{ $element_id }}_files').on('click',function(e){
 
@@ -365,6 +375,10 @@ $(document).ready(function(){
                 upl += '<input type="hidden" name="file_id[]" value="' + file.file_id + '"></li>';
 
                 $(upl).prependTo('#{{ $element_id }}_uploadedform ul');
+
+                clip = new ZeroClipboard($('.file_copy').each(function(){ }),{
+                    moviePath: '{{ URL::to('js/zeroclipboard')}}/ZeroClipboard.swf'
+                });
 
             });
         },

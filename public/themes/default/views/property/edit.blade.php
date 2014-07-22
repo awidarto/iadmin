@@ -235,13 +235,6 @@ $(document).ready(function() {
         // load default permission here
     });
 
-    /*
-    var editor = new wysihtml5.Editor('ecofriendly', { // id of textarea element
-      toolbar:      'wysihtml5-toolbar', // id of toolbar element
-      parserRules:  wysihtml5ParserRules // defined in parser rules set
-    });
-    */
-
     $('#name').keyup(function(){
         var title = $('#name').val();
         var slug = string_to_slug(title);

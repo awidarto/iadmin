@@ -268,7 +268,6 @@ class PropertyController extends AdminController {
 
 
             }
-
         }else{
 
             $data['thumbnail_url'] = array();
