@@ -191,7 +191,7 @@ class PropmanagerController extends AdminController {
 
     public function nodigit($data, $fieldname = null){
         $fieldname = is_null($fieldname)? 'roi':$fieldname;
-        return number_format($data[$fieldname],0);
+        return number_format((double)$data[$fieldname],0);
     }
 
     public function onedigit($data, $fieldname = null){
