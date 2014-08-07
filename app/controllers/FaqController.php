@@ -98,6 +98,10 @@ class FaqController extends AdminController {
     {
         $data['creatorName'] = Auth::user()->fullname;
 
+        $count = Faq::count();
+
+        $data['sequence'] = $count+1;
+
         return $data;
     }
 

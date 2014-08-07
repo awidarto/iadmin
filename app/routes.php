@@ -103,6 +103,13 @@ Route::get('regenerate',function(){
 
 });
 
+Route::get('ccheck',function(){
+    $count = Faq::count();
+
+    print_r($count);
+
+});
+
 Route::get('addseq/{c?}',function($c = 'faq'){
 
     if($c == 'faq'){
