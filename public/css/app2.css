@@ -218,3 +218,8 @@ div.dataTables_length label {
     color: #dd4b39;
     font-weight: bold;
 }
+
+.reorder{
+    cursor: pointer;
+    display: block;
+}

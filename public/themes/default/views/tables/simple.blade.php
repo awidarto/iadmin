@@ -366,6 +366,12 @@
 					"sSwfPath": "{{ URL::to('/')  }}/swf/copy_csv_xls_pdf.swf"
 				},
 
+				"fnRowCallback": function (nRow, aData, iDisplayIndex) {
+					console.log(aData);
+				    //nRow.setAttribute('id', aData.RowOrder);  //Initialize row id for every row
+				    nRow.setAttribute('id', aData[{{ $table_dnd_idx + 1 }}]);  //Initialize row id for every row
+				},
+
 				"aoColumnDefs": [
 				    { "bSortable": false, "aTargets": [ {{ $disablesort }} ] }
 				 ],
@@ -382,6 +388,16 @@
 
 			}
         );
+
+        @if($table_dnd == true)
+        	oTable.rowReordering(
+        		{
+        			sURL:'{{ URL::to( $table_dnd_url ) }}',
+        			sRequestType: 'GET',
+        			iIndexColumn: {{ $table_dnd_idx }}
+        		}
+        	);
+        @endif
 
     	$('div.dataTables_length select').wrap('<div class="ingrid styled-select" />');
 

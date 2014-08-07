@@ -165,6 +165,9 @@
     {{ HTML::script('js/jquery.collageCaption.js')}}
     {{ HTML::script('js/jquery-datatables/jquery.datatables.min.js')}}
     {{ HTML::script('js/jquery-datatables/datatables.bootstrap.js')}}
+    {{ HTML::script('js/jquery.dataTables.rowReordering.js') }}
+    {{ HTML::script('js/jquery.dataTables.rowGrouping.js') }}
+
 
     {{ HTML::script('js/jquery.tagsinput.js') }}
 

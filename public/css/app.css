@@ -621,3 +621,7 @@ thead#searchinput tr td input.search_init{
 	right: 0;
 }
 
+.reorder{
+    cursor: pointer;
+    display: block;
+}

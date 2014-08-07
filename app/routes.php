@@ -103,6 +103,21 @@ Route::get('regenerate',function(){
 
 });
 
+Route::get('addseq/{c?}',function($c = 'faq'){
+
+    if($c == 'faq'){
+        $faqs = Faq::orderBy('createdDate','desc')->get();
+    }else if($c == 'glossary'){
+        $faqs = Glossary::orderBy('createdDate','desc')->get();
+    }
+    $seq = 1;
+    foreach($faqs as $f){
+        $f->sequence = $seq;
+        $f->save();
+        $seq++;
+    }
+});
+
 Route::get('proi',function(){
     $price = 100000;
     $pct = 3;

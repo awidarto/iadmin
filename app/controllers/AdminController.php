@@ -70,6 +70,18 @@ class AdminController extends Controller {
 
     public $js_additional_param = '';
 
+    public $table_dnd = false;
+
+    public $table_dnd_url = '';
+
+    public $table_dnd_idx = 0;
+
+    public $table_group = false;
+
+    public $table_group_field = '';
+
+    public $table_group_idx = 0;
+
     public $additional_query = false;
 
     public $def_order_by = 'lastUpdate';
@@ -188,6 +200,12 @@ class AdminController extends Controller {
             ->with('js_additional_param', $this->js_additional_param)
             ->with('modal_sets', $this->modal_sets)
             ->with('js_table_event', $this->js_table_event)
+            ->with('table_dnd', $this->table_dnd)
+            ->with('table_dnd_url', $this->table_dnd_url)
+            ->with('table_dnd_idx', $this->table_dnd_idx)
+            ->with('table_group', $this->table_group)
+            ->with('table_group_field', $this->table_group_field)
+            ->with('table_group_idx', $this->table_group_idx)
             ->with('additional_page_data',$this->additional_page_data)
 			->with('heads',$heads )
 			->with('row',$this->rowdetail );
