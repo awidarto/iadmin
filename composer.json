@@ -4,19 +4,20 @@
 	"keywords": ["framework", "laravel"],
 	"license": "MIT",
 	"require": {
-		"laravel/framework": "4.1.*",
+		"laravel/framework": "4.2.*",
         "jenssegers/mongodb": "*",
         "mj/breadcrumb": "dev-master",
         "anahkiasen/former": "dev-master",
-        "intervention/image": "2.0.0",
+        "intervention/image": "2.0.*",
         "intervention/imagecache": "dev-master",
         "intervention/helper": "dev-master",
         "intervention/validation": "dev-master",
         "maatwebsite/excel": "1.*",
-        "alexwhitman/view-themes": "1.1.2",
+        "alexwhitman/view-themes": "1.2.*",
         "barryvdh/laravel-dompdf": "dev-master",
         "knplabs/knp-snappy": "*",
         "barryvdh/laravel-snappy": "dev-master",
+        "flynsarmy/db-blade-compiler": "1.*",
         "pingpong/menus": "1.0.*"
 	},
 	"autoload": {
