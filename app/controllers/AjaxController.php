@@ -671,6 +671,7 @@ class AjaxController extends BaseController {
         $property = Property::find($trx_id);
 
         $property->propertyStatus = $status;
+        $property->lastUpdate = new MongoDate();
         $property->save();
 
         $trx = Transaction::where('propObjectId','=',$trx_id)->first();
@@ -702,11 +703,13 @@ class AjaxController extends BaseController {
 
         if($status == 'canceled'){
             $property->propertyStatus = 'available';
+            $property->lastUpdate = new MongoDate();
             $property->save();
             $trx->orderStatus = $status;
             $trx->save();
         }else if($status == 'sold'){
             $property->propertyStatus = 'sold';
+            $property->lastUpdate = new MongoDate();
             $property->save();
             $trx->orderStatus = $status;
             $trx->save();
@@ -727,6 +730,7 @@ class AjaxController extends BaseController {
             $prop = Property::find($p);
 
             if($prop){
+                $prop->lastUpdate = new MongoDate();
                 $prop->push('assigned_user',$user_id,true);
                 $prop->save();
             }
@@ -748,6 +752,7 @@ class AjaxController extends BaseController {
             $prop = Property::find($p);
 
             if($prop){
+                $prop->lastUpdate = new MongoDate();
                 $prop->pull('assigned_user',$user_id);
                 $prop->save();
             }
@@ -769,6 +774,7 @@ class AjaxController extends BaseController {
             $prop = Buyer::find($p);
 
             if($prop){
+                $prop->lastUpdate = new MongoDate();
                 $prop->push('assigned_group',$user_id,true);
                 $prop->save();
             }
@@ -790,6 +796,7 @@ class AjaxController extends BaseController {
             $prop = Buyer::find($p);
 
             if($prop){
+                $prop->lastUpdate = new MongoDate();
                 $prop->pull('assigned_group',$user_id);
                 $prop->save();
             }
