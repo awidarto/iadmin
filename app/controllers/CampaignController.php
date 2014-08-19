@@ -104,27 +104,24 @@ class CampaignController extends AdminController {
     {
         //print_r($data);
         //exit();
+        $id = $data['_id'];
+
         if($data['sendOption'] == 'immediately'){
-            //make queue id
-            $qid = Prefs::makeQueueId();
-            $qdate = new MongoDate();
-
-            $cid = $data['_id']->toString();
-
-            $cmp = Campaign::find($cid);
-
-            $cmp->push( array('queueId'=>$qid, 'queueInitTime' => $qdate));
-
-            $cmp->save();
-
-            //put into queue
-
-
-
-            //set history
-
+            $senddate = new MongoDate();
         }else{
+            $senddate = new MongoDate( strtotime($data['sendDate']) );
+        }
 
+        $contacts = Buyer::where('assigned_group', $data['contactGroup'])->get()->toArray();
+
+        foreach($contacts as $contact){
+            $q = new Mailqueue();
+            $q->campaignId = $id;
+            $q->email = $contact['email'];
+            $q->template = $data['newsletterTemplate'];
+            $q->sendDate = $senddate;
+            $q->status = 'unsent';
+            $q->save();
         }
 
         return $data;
@@ -132,6 +129,23 @@ class CampaignController extends AdminController {
 
     public function afterUpdate($id,$data = null)
     {
+        if($data['sendOption'] == 'immediately'){
+            $senddate = new MongoDate();
+        }else{
+            $senddate = new MongoDate( strtotime($data['sendDate']) );
+        }
+
+        $contacts = Buyer::where('assigned_group', $data['contactGroup'])->get()->toArray();
+
+        foreach($contacts as $contact){
+            $q = new Mailqueue();
+            $q->campaignId = $id;
+            $q->email = $contact['email'];
+            $q->template = $data['newsletterTemplate'];
+            $q->sendDate = $senddate;
+            $q->status = 'unsent';
+            $q->save();
+        }
 
 
         return $id;

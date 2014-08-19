@@ -118,6 +118,7 @@ return array(
         'AlexWhitman\ViewThemes\ViewThemesServiceProvider',
         'Barryvdh\DomPDF\ServiceProvider',
         'Barryvdh\Snappy\ServiceProvider',
+        'Flynsarmy\DbBladeCompiler\DbBladeCompilerServiceProvider',
 	),
 
 	/*
@@ -195,6 +196,7 @@ return array(
         'Theme'           => 'AlexWhitman\ViewThemes\ThemeFacade',
         'Carbon'          => 'Carbon\Carbon',
         'PDF'             => 'Barryvdh\Snappy\Facades\SnappyPdf',
+        'DbView'          => 'Flynsarmy\DbBladeCompiler\Facades\DbView',
 	),
 
 );

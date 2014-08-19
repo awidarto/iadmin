@@ -19,9 +19,9 @@ return array(
         ),
     'send_options'=>array(
             'immediately'=>'Send Now',
-            'atdate'=>'At Specified Date',
+            'atdate'=>'At Specified Date'/*,
             'onceaweek'=>'Once A Week',
-            'onceamonth'=>'Once A Month'
+            'onceamonth'=>'Once A Month'*/
         ),
     'days'=>array(
             'Monday'=>'Monday',

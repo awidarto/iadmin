@@ -40,9 +40,9 @@
         {{ Former::select('sendOption', 'Start')
             ->options( Config::get('kickstart.send_options') ) }}
 
-        {{ Former::select('dayOption', 'Every ')
+        {{-- Former::select('dayOption', 'Every ')
             ->help('use for periodicals ( every week / every month )')
-            ->options( Config::get('kickstart.days') ) }}
+            ->options( Config::get('kickstart.days') ) --}}
 
         {{ Former::text('sendDate','at Date')->class('span7 datepicker')
             //->data_format('dd-mm-yyyy')
