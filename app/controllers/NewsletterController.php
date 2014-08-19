@@ -95,9 +95,11 @@ class NewsletterController extends AdminController {
 
         $template = Str::random(8);
 
+        /*
         if(file_put_contents(public_path().'/themes/default/views/newslettertmpl/'.$template.'.blade.php', $data['body'])){
             $data['template'] = $template;
         }
+        */
 
         $defaults = array();
         $files = array();
@@ -166,7 +168,7 @@ class NewsletterController extends AdminController {
     {
         $template = ($data['template'] == '')?Str::random(8):$data['template'];
 
-        file_put_contents(public_path().'/themes/default/views/newslettertmpl/'.$template.'.blade.php', $data['body']);
+        //file_put_contents(public_path().'/themes/default/views/newslettertmpl/'.$template.'.blade.php', $data['body']);
 
         $defaults = array();
         $files = array();
