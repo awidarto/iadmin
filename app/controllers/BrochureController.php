@@ -299,6 +299,19 @@ class BrochureController extends AdminController {
             $contact['mobile'] = '';
         }
 
+            $annualRental = 12*$prop['monthlyRental'];
+            $propManagementFee = $annualRental * 0.1;
+            $maintenanceAllowance = $annualRental * 0;
+            $vacancyAllowance = $annualRental * 0;
+
+            $totalExpense = $propManagementFee + $maintenanceAllowance + $vacancyAllowance + $prop['tax'] + $prop['insurance'];
+
+            $netAnnualCashFlow = $annualRental - $totalExpense;
+            $netMonthlyCashFlow = round($netAnnualCashFlow / 12, 0, PHP_ROUND_HALF_UP);
+
+            $netroi = ($netAnnualCashFlow / $prop['listingPrice']);
+
+
         $rental = (double)$prop['monthlyRental'] * 12;
         $price = (double)$prop['listingPrice'];
         $year = 3;
@@ -309,7 +322,7 @@ class BrochureController extends AdminController {
         $result = 0;
         $pct = 5;
 
-        $projected = px($price, $pct, $year,$initprice,$rental ,$roi, $counter, $result);
+        $projected = px($price, $pct, $year,$initprice,$rental ,$roi, $counter, $netroi, $result);
 
         $roi3 = $result;
         //print 'projected ROI : '.$result;
@@ -320,7 +333,7 @@ class BrochureController extends AdminController {
         $initprice = $price;
         $counter = $year;
         $result = 0;
-        $projected = px($price, $pct, $year,$initprice,$rental ,$roi, $counter, $result);
+        $projected = px($price, $pct, $year,$initprice,$rental ,$roi, $counter, $netroi, $result);
 
         $roi5 = $result;
         //print 'projected ROI : '.$result;

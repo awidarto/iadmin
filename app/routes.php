@@ -144,7 +144,7 @@ Route::get('proi',function(){
 
 });
 
-function px($price, $pct, $year, $initprice,$rental ,$roi, $counter, &$result){
+function px($price, $pct, $year, $initprice,$rental ,$roi, $counter, $netroi ,&$result){
     if($counter == 0){
         return $roi;
     }else{
@@ -152,13 +152,14 @@ function px($price, $pct, $year, $initprice,$rental ,$roi, $counter, &$result){
         $mult = ($year - $counter) + 1;
         //$rental = $rental * $mult;
 
-        $roi = (($price - $initprice) + ( $rental * $mult ) )/ $initprice;
+        $roi = (($price - $initprice) + ( $rental * $mult * $netroi ) )/ $initprice;
         $result = $roi;
         /*
         print_r(
             array(
                 'price'=>$price,
                 'rental'=>$rental,
+                'netroi'=>$netroi,
                 'roi'=>$roi,
                 'result'=>$result,
                 'counter'=>$counter,
@@ -167,8 +168,9 @@ function px($price, $pct, $year, $initprice,$rental ,$roi, $counter, &$result){
                 )
             );
         */
+
         $counter--;
-        px($price, $pct, $year, $initprice, $rental, $roi ,$counter, $result);
+        px($price, $pct, $year, $initprice, $rental, $roi ,$counter, $netroi, $result);
     }
 }
 
