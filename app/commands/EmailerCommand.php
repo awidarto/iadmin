@@ -62,7 +62,7 @@ class EmailerCommand extends Command {
 
             //print $content;
 
-            Mail::send('emails.blank',array('body'=>$content), function($message) use ($recinfo){
+            Mail::send('emails.blank',array('body'=>$content), function($message) use ($recinfo, $rec){
                 $to = $recinfo['email'];
 
                 $fullname = $recinfo['firstname'].' '.$recinfo['lastname'];
@@ -74,6 +74,8 @@ class EmailerCommand extends Command {
                 $message->from('support@propinvestorsalliance.com');
 
                 $message->cc('support@propinvestorsalliance.com');
+
+                Mailqueue::where('_id',$rec['_id'])->update(array('status'=>'sent'));
 
                 //$message->attach(public_path().'/storage/pdf/'.$prop['propertyId'].'.pdf');
             });
