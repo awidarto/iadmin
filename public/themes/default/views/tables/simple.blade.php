@@ -692,7 +692,7 @@
 							//redraw table
 
 							oTable.fnDraw();
-							alert("Item id : " + _id + " deleted");
+							alert("Item id : " + _id + " duplicated");
 						}
 					},'json');
 
