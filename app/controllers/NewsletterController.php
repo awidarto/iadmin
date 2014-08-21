@@ -288,16 +288,17 @@ class NewsletterController extends AdminController {
 
     public function makeActions($data)
     {
-        $delete = '<span class="del" id="'.$data['_id'].'" ><i class="icon-trash"></i>Delete</span>';
-        $active = '<span class="active" id="'.$data['_id'].'" ><i class="icon-trash"></i>Set Active</span>';
-        $edit = '<a href="'.URL::to('newsletter/edit/'.$data['_id']).'"><i class="icon-edit"></i>Update</a>';
+        $delete = '<span class="del" id="'.$data['_id'].'" ><i class="icon-trash"></i> Delete</span>';
+        $dupe = '<span class="dupe" id="'.$data['_id'].'" ><i class="icon-copy"></i> Duplicate</span>';
+        $active = '<span class="active" id="'.$data['_id'].'" ><i class="icon-trash"></i> Set Active</span>';
+        $edit = '<a href="'.URL::to('newsletter/edit/'.$data['_id']).'"><i class="icon-edit"></i> Update</a>';
 
         $pdf = '<a href="'.URL::to('newsletter/preview/'.$data['template'].'/pdf').'" target="blank"
         ><i class="icon-edit"></i>PDF Preview</a>';
         $html = '<a href="'.URL::to('newsletter/preview/'.$data['template'].'/html').'" target="blank"
         ><i class="icon-edit"></i>HTML Preview</a>';
 
-        $actions = $edit.'<br />'.$active.'<br />'.$delete.'<br />'.$pdf.'<br />'.$html;
+        $actions = $edit.'<br />'.$active.'<br />'.$dupe.'<br />'.$delete.'<br />'.$pdf.'<br />'.$html;
         return $actions;
     }
 

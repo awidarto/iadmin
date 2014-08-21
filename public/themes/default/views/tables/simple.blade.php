@@ -24,7 +24,7 @@
 	color:white;
 }
 
-.del,.upload, .active{
+.del,.upload, .active,.dupe{
 	cursor:pointer;
 }
 
@@ -669,13 +669,35 @@
 						if(data.status == 'OK'){
 							//redraw table
 
-							oTable.fnStandingRedraw();
+							oTable.fnDraw();
 							alert("Item id : " + _id + " deleted");
 						}
 					},'json');
 
 				}else{
 					alert("Deletion cancelled");
+				}
+		   	}
+
+			if ($(e.target).is('.dupe')) {
+				var _id = e.target.id;
+				var answer = confirm("Are you sure you want to duplicate this item ?");
+
+				console.log(answer);
+
+				if (answer == true){
+
+					$.post('{{ URL::to($ajaxdupe) }}',{'id':_id}, function(data) {
+						if(data.status == 'OK'){
+							//redraw table
+
+							oTable.fnDraw();
+							alert("Item id : " + _id + " deleted");
+						}
+					},'json');
+
+				}else{
+					alert("Duplication cancelled");
 				}
 		   	}
 

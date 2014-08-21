@@ -44,6 +44,8 @@ class AdminController extends Controller {
 
     public $delurl = null;
 
+    public $dupeurl = null;
+
     public $dlxl = null;
 
     public $newbutton = null;
@@ -93,6 +95,8 @@ class AdminController extends Controller {
     public $additional_page_data = array();
 
     public $table_view = 'tables.simple';
+
+    public $dupe_name_field = 'title';
 
 	public function __construct(){
 
@@ -150,6 +154,8 @@ class AdminController extends Controller {
 
         $this->delurl = (is_null($this->delurl))? strtolower($this->controller_name).'/del': $this->delurl;
 
+        $this->dupeurl = (is_null($this->dupeurl))? strtolower($this->controller_name).'/dupe': $this->dupeurl;
+
         $this->newbutton = (is_null($this->newbutton))? Str::singular($this->controller_name): $this->newbutton;
 
 		$select_all = Former::checkbox()->name('Select All')->check(false)->id('select_all');
@@ -190,6 +196,7 @@ class AdminController extends Controller {
 			->with('ajaxsource',URL::to($this->ajaxsource) )
 			->with('ajaxdel',URL::to($this->delurl) )
             ->with('ajaxdlxl',URL::to($this->dlxl) )
+            ->with('ajaxdupe',URL::to($this->dupeurl) )
 			->with('crumb',$this->crumb )
             ->with('can_add', $this->can_add )
             ->with('is_report',$this->is_report)
@@ -720,6 +727,26 @@ class AdminController extends Controller {
 
 		return Response::json($result);
 	}
+
+    public function postDupe()
+    {
+        $_id = Input::get('id');
+
+        $obj = $this->model->find($_id)->toArray();
+
+        unset($obj['_id']);
+        $obj['lastUpdate'] = new MongoDate();
+        $obj['createdDate'] = new MongoDate();
+
+        $obj[$this->dupe_name_field] = 'Copy of '.$obj[$this->dupe_name_field];
+
+        if($this->model->insert($obj )){
+            return Response::json(array('status'=>'OK'));
+        }else{
+            return Response::json(array('status'=>'NOK'));
+        }
+
+    }
 
 	public function beforeSave($data)
 	{

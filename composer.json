@@ -18,7 +18,8 @@
         "knplabs/knp-snappy": "*",
         "barryvdh/laravel-snappy": "dev-master",
         "flynsarmy/db-blade-compiler": "1.*",
-        "pingpong/menus": "1.0.*"
+        "pingpong/menus": "1.0.*",
+        "bogardo/mailgun": "3.0.*"
 	},
 	"autoload": {
 		"classmap": [
