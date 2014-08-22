@@ -322,10 +322,9 @@ class BrochureController extends AdminController {
         $result = 0;
         $pct = 5;
 
-        $projected = px($price, $pct, $year,$initprice,$rental ,$roi, $counter, $netroi, $result);
+        fv( $initprice, $pct, $year, $counter ,$result );
 
-        $roi3 = $result;
-        //print 'projected ROI : '.$result;
+        $roi3 = (($result - $price) + ( $price * $netroi * $year )) / $price;
 
         $pct = 10;
 
@@ -333,10 +332,10 @@ class BrochureController extends AdminController {
         $initprice = $price;
         $counter = $year;
         $result = 0;
-        $projected = px($price, $pct, $year,$initprice,$rental ,$roi, $counter, $netroi, $result);
 
-        $roi5 = $result;
-        //print 'projected ROI : '.$result;
+        fv( $initprice, $pct, $year, $counter ,$result );
+
+        $roi5 = (($result - $price) + ( $price * $netroi * $year )) / $price;
 
         if(!is_null($type) && $type != 'pdf'){
             $content = View::make('brochuretmpl.'.$template)
@@ -391,15 +390,79 @@ class BrochureController extends AdminController {
 
         $template = $tmpl->template;
 
-        if(Auth::check()){
-            $contact['fullname'] = Auth::user()->firstname.' '.Auth::user()->lastname;
+        $nophotolrg = URL::to('images/no-photo-lrg.jpg');
+        $nophoto = URL::to('images/no-photo.jpg');
+        $nophotomd = URL::to('images/no-photo-md.jpg');
+
+            if(isset($prop['defaultpictures'])){
+                $d = $prop['defaultpictures'];
+                $d['brchead'] = (isset($d['brchead']) && $d['brchead'] != '')?$d['brchead']:$nophotolrg;
+                $d['brc1'] = ( isset($d['brc1']) && $d['brc1'] != '')?$d['brc1']:$nophotomd;
+                $d['brc2'] = ( isset($d['brc2']) && $d['brc2'] != '')?$d['brc2']:$nophotomd;
+                $d['brc3'] = ( isset($d['brc3']) && $d['brc3'] != '')?$d['brc3']:$nophotomd;
+            }else{
+                $d = array();
+                $d['brchead'] = $nophoto;
+                $d['brc1'] = $nophotomd;
+                $d['brc2'] = $nophotomd;
+                $d['brc3'] = $nophotomd;
+            }
+
+        $prop['defaultpictures'] = $d;
+
+        if(Auth::check() && ( isset(Auth::user()->showContact) && Auth::user()->showContact == 'yes') ){
+            if(isset(Auth::user()->firstname)){
+                $contact['fullname'] = Auth::user()->firstname.' '.Auth::user()->lastname;
+            }else if( isset(Auth::user()->fullname)){
+                $contact['fullname'] = Auth::user()->fullname;
+            }else{
+                $contact['fullname'] = '';
+            }
             $contact['email'] = Auth::user()->email;
             $contact['mobile'] = Auth::user()->mobile;
         }else{
-            $contact['fullname'] = Options::get('brochure_default_name');
-            $contact['email'] = Options::get('brochure_default_email');
-            $contact['mobile'] = Options::get('brochure_default_mobile');
+            $contact['fullname'] = '';
+            $contact['email'] = '';
+            $contact['mobile'] = '';
         }
+
+            $annualRental = 12*$prop['monthlyRental'];
+            $propManagementFee = $annualRental * 0.1;
+            $maintenanceAllowance = $annualRental * 0;
+            $vacancyAllowance = $annualRental * 0;
+
+            $totalExpense = $propManagementFee + $maintenanceAllowance + $vacancyAllowance + $prop['tax'] + $prop['insurance'];
+
+            $netAnnualCashFlow = $annualRental - $totalExpense;
+            $netMonthlyCashFlow = round($netAnnualCashFlow / 12, 0, PHP_ROUND_HALF_UP);
+
+            $netroi = ($netAnnualCashFlow / $prop['listingPrice']);
+
+
+        $rental = (double)$prop['monthlyRental'] * 12;
+        $price = (double)$prop['listingPrice'];
+        $year = 3;
+
+        $roi = 0;
+        $initprice = $price;
+        $counter = $year;
+        $result = 0;
+        $pct = 5;
+
+        fv( $initprice, $pct, $year, $counter ,$result );
+
+        $roi3 = (($result - $price) + ( $price * $netroi * $year )) / $price;
+
+        $pct = 10;
+
+        $roi = 0;
+        $initprice = $price;
+        $counter = $year;
+        $result = 0;
+
+        fv( $initprice, $pct, $year, $counter ,$result );
+
+        $roi5 = (($result - $price) + ( $price * $netroi * $year )) / $price;
 
         //$content = View::make('print.brochure')->with('prop',$prop)->render();
 

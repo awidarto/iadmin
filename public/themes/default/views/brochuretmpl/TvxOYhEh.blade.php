@@ -327,8 +327,8 @@
                                 $roi = ($netAnnualCashFlow / $prop['listingPrice']) * 100;
                                 $roi = round($roi, 1, PHP_ROUND_HALF_UP);
 
-                                $roi3 = round($roi3 * 100, 1, PHP_ROUND_HALF_UP);
-                                $roi5 = round($roi5 * 100, 1, PHP_ROUND_HALF_UP);
+                                $roi3 = number_format( $roi3 * 100, 2,'.',',');
+                                $roi5 = number_format( $roi5 * 100, 2,'.',',');
 
                             ?>
                             <tr>

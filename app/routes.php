@@ -144,6 +144,21 @@ Route::get('proi',function(){
 
 });
 
+function fv($initprice, $pct, $year, $counter ,&$result){
+    if($counter == 0){
+        return $initprice;
+    }else{
+        $initprice = $initprice * ( (100 + $pct) / 100 );
+
+        //print $initprice."\r\n";
+
+        $result = $initprice;
+        $counter--;
+        fv($initprice, $pct, $year ,$counter, $result);
+    }
+}
+
+
 function px($price, $pct, $year, $initprice,$rental ,$roi, $counter, $netroi ,&$result){
     if($counter == 0){
         return $roi;
