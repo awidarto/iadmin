@@ -295,10 +295,10 @@ class NewsletterController extends AdminController {
 
         $pdf = '<a href="'.URL::to('newsletter/preview/'.$data['template'].'/pdf').'" target="blank"
         ><i class="icon-edit"></i>PDF Preview</a>';
-        $html = '<a href="'.URL::to('newsletter/preview/'.$data['template'].'/html').'" target="blank"
+        $html = '<a href="'.URL::to('epreview/'.$data['_id']).'" target="blank"
         ><i class="icon-edit"></i>HTML Preview</a>';
 
-        $actions = $edit.'<br />'.$active.'<br />'.$dupe.'<br />'.$delete.'<br />'.$pdf.'<br />'.$html;
+        $actions = $edit.'<br />'.$active.'<br />'.$dupe.'<br />'.$delete.'<br />'.$html;
         return $actions;
     }
 
