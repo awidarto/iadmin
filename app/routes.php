@@ -110,6 +110,10 @@ Route::get('ccheck',function(){
 
 });
 
+Route::get('etemplate',function(){
+    return View::make('emails.newsletter');
+});
+
 Route::get('addseq/{c?}',function($c = 'faq'){
 
     if($c == 'faq'){

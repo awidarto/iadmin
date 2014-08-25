@@ -46,24 +46,24 @@
 
 </style>
 
-{{-- HTML::script('js/ace/ace.js') --}}
-{{-- HTML::script('js/ace/theme-twilight.js') --}}
-{{-- HTML::script('js/ace/mode-php.js') --}}
-{{-- HTML::script('js/jquery-ace.min.js') --}}
+{{ HTML::script('js/ace/ace.js') }}
+{{ HTML::script('js/ace/theme-twilight.js') }}
+{{ HTML::script('js/ace/mode-php.js') }}
+{{ HTML::script('js/jquery-ace.min.js') }}
 
 
-{{ HTML::script('js/codemirror/lib/codemirror.js') }}
-{{ HTML::script('js/codemirror/mode/php/php.js') }}
-{{ HTML::script('js/codemirror/mode/xml/xml.js') }}
+{{-- HTML::script('js/codemirror/lib/codemirror.js') --}}
+{{-- HTML::script('js/codemirror/mode/php/php.js') --}}
+{{-- HTML::script('js/codemirror/mode/xml/xml.js') --}}
 
 
-{{ HTML::style('css/summernote-bs2.css') }}
-{{ HTML::style('css/summernote.css')}}
-{{ HTML::style('css/summernote-bp.css')}}
-{{ HTML::script('js/summernote.min.js') }}
+{{-- HTML::style('css/summernote-bs2.css') --}}
+{{-- HTML::style('css/summernote.css')--}}
+{{-- HTML::style('css/summernote-bp.css')--}}
+{{-- HTML::script('js/summernote.min.js') --}}
 
-{{ HTML::style('js/codemirror/lib/codemirror.css') }}
-{{ HTML::style('js/codemirror/theme/twilight.css') }}
+{{-- HTML::style('js/codemirror/lib/codemirror.css') --}}
+{{-- HTML::style('js/codemirror/theme/twilight.css') --}}
 
 <script type="text/javascript">
 
@@ -77,8 +77,9 @@ $(document).ready(function() {
         $('#permalink').val(slug);
     });
 
-    /*$('.code').ace({ theme: 'twilight', lang: 'php' });*/
+    $('.code').ace({ theme: 'twilight', lang: 'php' });
 
+    /*
     $('#body').summernote({
         height:'600px',
         codemirror: {
@@ -86,6 +87,7 @@ $(document).ready(function() {
             'mode':'php'
         }
     });
+    */
 
 
 });
