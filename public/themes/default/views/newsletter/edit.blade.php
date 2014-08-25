@@ -16,7 +16,7 @@
         {{ Former::textarea('body','Body')->name('body')->class('code')->id('body')->style('min-height:600px;') }}
     </div>
     <div class="span3">
-        <a href="{{ URL::to('newsletter/preview/'.$formdata['_id'].'/pdf')}}" class="btn" target="blank">PDF Preview</a>
+        <a href="{{ URL::to('epreview/'.$formdata['_id'])}}" class="btn" target="blank">Email Preview</a>
         {{ Former::select('status')->options(array('inactive'=>'Inactive','active'=>'Active'))->label('Status') }}
         {{ Former::text('title','Title') }}
         {{ Former::text('slug','Permalink')->id('permalink') }}

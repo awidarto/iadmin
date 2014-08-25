@@ -46,18 +46,18 @@
 {{-- HTML::script('js/jquery-ace.min.js') --}}
 
 
-{{ HTML::script('js/codemirror/lib/codemirror.js') }}
-{{ HTML::script('js/codemirror/mode/php/php.js') }}
-{{ HTML::script('js/codemirror/mode/xml/xml.js') }}
+{{-- HTML::script('js/codemirror/lib/codemirror.js') --}}
+{{-- HTML::script('js/codemirror/mode/php/php.js') --}}
+{{-- HTML::script('js/codemirror/mode/xml/xml.js') --}}
 
 
-{{ HTML::style('css/summernote-bs2.css') }}
-{{ HTML::style('css/summernote.css')}}
-{{ HTML::style('css/summernote-bp.css')}}
-{{ HTML::script('js/summernote.min.js') }}
+{{-- HTML::style('css/summernote-bs2.css') --}}
+{{-- HTML::style('css/summernote.css')--}}
+{{-- HTML::style('css/summernote-bp.css')--}}
+{{-- HTML::script('js/summernote.min.js') --}}
 
-{{ HTML::style('js/codemirror/lib/codemirror.css') }}
-{{ HTML::style('js/codemirror/theme/twilight.css') }}
+{{-- HTML::style('js/codemirror/lib/codemirror.css') --}}
+{{-- HTML::style('js/codemirror/theme/twilight.css') --}}
 
 <style type="text/css">
 #lyric{
@@ -72,12 +72,18 @@
 
 $(document).ready(function() {
 
+    /*
     $('#body').summernote({
         height:'600px',
         codemirror: {
             'theme':'twilight',
             'mode':'php'
         }
+    });
+    */
+
+    $('#body').ckeditor({
+        height:'600px'
     });
 
     $('#title').keyup(function(){

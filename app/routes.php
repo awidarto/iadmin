@@ -114,6 +114,12 @@ Route::get('etemplate',function(){
     return View::make('emails.newsletter');
 });
 
+Route::get('epreview/{id}',function($id){
+    $template = Template::find($id);
+
+    return DbView::make($template)->field('body');
+});
+
 Route::get('addseq/{c?}',function($c = 'faq'){
 
     if($c == 'faq'){

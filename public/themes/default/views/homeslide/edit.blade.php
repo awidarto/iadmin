@@ -43,29 +43,14 @@
 
 {{Former::close()}}
 
-{{ HTML::script('js/codemirror/lib/codemirror.js') }}
-{{ HTML::script('js/codemirror/mode/php/php.js') }}
-{{ HTML::script('js/codemirror/mode/xml/xml.js') }}
-
-{{ HTML::style('css/summernote-bs2.css') }}
-{{ HTML::style('css/summernote.css')}}
-{{ HTML::style('css/summernote-bp.css')}}
-{{ HTML::script('js/summernote.min.js') }}
-
-{{ HTML::style('js/codemirror/lib/codemirror.css') }}
-{{ HTML::style('js/codemirror/theme/twilight.css') }}
 
 <script type="text/javascript">
 
 
 $(document).ready(function() {
 
-    $('.editor').summernote({
-        height:'300px',
-        codemirror: {
-            'theme':'twilight',
-            'mode':'php'
-        }
+    $('.editor').ckeditor({
+        height:'400px'
     });
 
 });
