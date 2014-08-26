@@ -106,7 +106,7 @@
 
                         $filename = $allin['filename'];
                         $thumbnail_url = $allin['thumbnail_url'];
-                        $full_url = $allin['full_url'];
+                        $full_url = str_replace('/full_','',$allin['full_url']);
                         $file_id = $allin['file_id'];
                         /*
                         $thumb = '<li><img style="width:125px;" src="%s"><span class="file_del icon-trash" id="%s"></span>';

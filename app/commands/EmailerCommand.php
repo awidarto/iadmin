@@ -53,14 +53,23 @@ class EmailerCommand extends Command {
         foreach($recipients as $rec ){
             if($rec['template'] != $templateId || is_null($template) ){
                 $template = Template::find($rec['template']);
+                $props = $template->properties;
+
+                $props = explode(',',$props);
+                if(count($props) > 0){
+                    $property = Property::whereIn('propertyId',$props)->get()->toArray();
+                }else{
+                    $property = array();
+                }
                 $templateId = $rec['template'];
             }
 
+
             $recinfo = Buyer::where('email',$rec['email'])->first()->toArray();
 
-            $content = DbView::make($template)->field('body')->with('rec', $recinfo)->render();
+            $content = DbView::make($template)->field('body')->with('rec', $recinfo)->with('prop',$property)->render();
 
-            //print $content;
+            print $content;
 
             Mail::send('emails.blank',array('body'=>$content), function($message) use ($recinfo, $rec){
                 $to = $recinfo['email'];
