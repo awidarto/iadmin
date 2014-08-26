@@ -227,8 +227,8 @@
 		   	'placeholderColor' : '#666666'
 		});
 
-		$('.tag_keyword').tagsInput({
-			'autocomplete_url': base + 'ajax/tag',
+		$('.tag_property').tagsInput({
+			'autocomplete_url': base + 'ajax/property',
 		   'height':'100px',
 		   'width':'100%',
 		   'interactive':true,
@@ -241,12 +241,33 @@
 		   'onRemoveTag' : function(t){
 		   			console.log(t);
 		   		},
-		   'defaultText':'add tag',
+		   'defaultText':'add property',
 		   'removeWithBackspace' : true,
-		   'minChars' : 0,
+		   'minChars' : 4,
 		   'maxChars' : 0, //if not provided there is no limit,
 		   'placeholderColor' : '#666666'
 		});
+
+        $('.tag_keyword').tagsInput({
+            'autocomplete_url': base + 'ajax/tag',
+           'height':'100px',
+           'width':'100%',
+           'interactive':true,
+           'onChange' : function(c){
+
+                },
+           'onAddTag' : function(t){
+                    console.log(t);
+                },
+           'onRemoveTag' : function(t){
+                    console.log(t);
+                },
+           'defaultText':'add tag',
+           'removeWithBackspace' : true,
+           'minChars' : 0,
+           'maxChars' : 0, //if not provided there is no limit,
+           'placeholderColor' : '#666666'
+        });
 
         $('.tag_state').tagsInput({
             'autocomplete_url': base + 'ajax/state',

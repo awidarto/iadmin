@@ -223,3 +223,10 @@ div.dataTables_length label {
     cursor: pointer;
     display: block;
 }
+
+.tag{
+    padding: 2px 4px;
+    margin: 2px;
+    background-color: #CCC;
+    display:inline-block;
+}

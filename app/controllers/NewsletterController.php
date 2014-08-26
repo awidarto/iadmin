@@ -36,6 +36,7 @@ class NewsletterController extends AdminController {
             array('Status',array('search'=>true,'sort'=>true)),
             array('Creator',array('search'=>true,'sort'=>false)),
             array('Category',array('search'=>true,'select'=>$categories,'sort'=>true)),
+            array('Featured Properties',array('search'=>true,'sort'=>true)),
             array('Tags',array('search'=>true,'sort'=>true)),
             array('Created',array('search'=>true,'sort'=>true,'date'=>true)),
             array('Last Update',array('search'=>true,'sort'=>true,'date'=>true)),
@@ -57,6 +58,7 @@ class NewsletterController extends AdminController {
             array('status',array('kind'=>'text','query'=>'like','pos'=>'both','show'=>true)),
             array('creatorName',array('kind'=>'text','query'=>'like','pos'=>'both','show'=>true,'attr'=>array('class'=>'expander'))),
             array('category',array('kind'=>'text','query'=>'like','pos'=>'both','show'=>true)),
+            array('properties',array('kind'=>'text','query'=>'like','pos'=>'both','show'=>true,'callback'=>'splitTag')),
             array('tags',array('kind'=>'text','query'=>'like','pos'=>'both','show'=>true,'callback'=>'splitTag')),
             array('createdDate',array('kind'=>'datetime','query'=>'like','pos'=>'both','show'=>true)),
             array('lastUpdate',array('kind'=>'datetime','query'=>'like','pos'=>'both','show'=>true)),
@@ -302,9 +304,9 @@ class NewsletterController extends AdminController {
         return $actions;
     }
 
-    public function splitTag($data){
-        $tags = explode(',',$data['tags']);
-        if(is_array($tags) && count($tags) > 0 && $data['tags'] != ''){
+    public function splitTag($data,$field = 'tags'){
+        $tags = explode(',',$data[$field]);
+        if(is_array($tags) && count($tags) > 0 && $data[$field] != ''){
             $ts = array();
             foreach($tags as $t){
                 $ts[] = '<span class="tag">'.$t.'</span>';
@@ -312,7 +314,7 @@ class NewsletterController extends AdminController {
 
             return implode('', $ts);
         }else{
-            return $data['docTag'];
+            return $data[$field];
         }
     }
 

@@ -22,6 +22,7 @@
         {{ Former::text('slug','Permalink')->id('permalink') }}
         {{ Former::select('category')->options(Prefs::getCategory()->catToSelection('title','title'))->label('Category') }}
         {{ Former::text('tags','Tags')->class('tag_keyword') }}
+        {{ Former::text('properties','Properties to be featured')->class('tag_property') }}
 
         <?php
             $fupload = new Fupload();

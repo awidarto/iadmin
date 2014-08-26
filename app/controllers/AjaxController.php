@@ -318,6 +318,27 @@ class AjaxController extends BaseController {
         return Response::json($result);
     }
 
+    public function getProperty()
+    {
+        $q = Input::get('term');
+
+        $qemail = new MongoRegex('/'.$q.'/i');
+
+        $res = Property::where('propertyId','regex',$qemail)
+            ->orWhere('states','regex',$qemail)
+            ->orWhere('address','regex',$qemail)
+            ->get()->toArray();
+
+        $result = array();
+
+        foreach($res as $r){
+            $fulladdress = $r['number'].' '.$r['address'].' '.$r['state'];
+            $result[] = array('id'=>$r['_id'],'value'=>$r['propertyId'],'description'=>$r['description'],'label'=>$r['propertyId'].' '.$fulladdress);
+        }
+
+        return Response::json($result);
+    }
+
     public function getProductplain()
     {
         $q = Input::get('term');
