@@ -14,6 +14,7 @@
         {{ Former::select('publishing')->options(array('unpublished'=>'Unpublished','published'=>'Published'))->label('Status') }}
 
         <h6>Video</h6>
+        {{ Former::select('videoType')->options(array('youtube'=>'Youtube','local'=>'Local'))->label('Video Type') }}
         {{ Former::text('videoTitle','Title') }}
         {{ Former::text('youtubeUrl','Youtube ID') }}
 

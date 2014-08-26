@@ -179,6 +179,151 @@ class UploadController extends Controller {
 
         $uploadSuccess = $file->move($destinationPath, $filename);
 
+        $is_image = $this->isImage($filemime);
+        $is_audio = $this->isAudio($filemime);
+        $is_video = $this->isVideo($filemime);
+        $is_pdf = $this->isPdf($filemime);
+
+        if(!($is_image || $is_audio || $is_video || $is_pdf)){
+            $is_doc = true;
+        }else{
+            $is_doc = false;
+        }
+
+        if($is_image){
+
+            $ps = Config::get('picture.sizes');
+
+            /*
+            $thumbnail = Image::make($destinationPath.'/'.$filename)
+                ->fit($ps['thumbnail']['width'],$ps['thumbnail']['height'])
+                //->insert($sm_wm,0,0, 'bottom-right')
+                ->save($destinationPath.'/th_'.$filename);
+
+            $medium = Image::make($destinationPath.'/'.$filename)
+                ->fit($ps['medium']['width'],$ps['medium']['height'])
+                //->insert($med_wm,0,0, 'bottom-right')
+                ->save($destinationPath.'/med_'.$filename);
+
+            $large = Image::make($destinationPath.'/'.$filename)
+                ->fit($ps['large']['width'],$ps['large']['height'])
+                ->insert($large_wm, 'bottom-right',15,15)
+                ->save($destinationPath.'/lrg_'.$filename);
+
+            $full = Image::make($destinationPath.'/'.$filename)
+                ->insert($large_wm, 'bottom-right',15,15)
+                ->save($destinationPath.'/full_'.$filename);
+
+            $image_size_array = array(
+                'thumbnail_url'=> URL::to('storage/media/'.$rstring.'/'.$ps['thumbnail']['prefix'].$filename),
+                'large_url'=> URL::to('storage/media/'.$rstring.'/'.$ps['large']['prefix'].$filename),
+                'medium_url'=> URL::to('storage/media/'.$rstring.'/'.$ps['medium']['prefix'].$filename),
+                'full_url'=> URL::to('storage/media/'.$rstring.'/'.$ps['full']['prefix'].$filename),
+            );
+            */
+
+            $image_size_array = array();
+
+            foreach($ps as $k=>$v){
+                if($v['wm'] == false){
+                    $thumbnail = Image::make($destinationPath.'/'.$filename)
+                        ->fit($v['width'],$v['height'])
+                        //->insert($sm_wm,0,0, 'bottom-right')
+                        ->save($destinationPath.'/'.$v['prefix'].$filename);
+                }else{
+                    $thumbnail = Image::make($destinationPath.'/'.$filename)
+                        ->fit($v['width'],$v['height'])
+                        ->insert(public_path().$v['wm'], $v['wmpos'], $v['wmx'], $v['wmy'])
+                        ->save($destinationPath.'/'.$v['prefix'].$filename);
+                }
+
+                $image_size_array[$k.'_url'] = URL::to('storage/media/'.$rstring.'/'.$v['prefix'].$filename);
+            }
+
+
+        }else{
+            if($is_audio){
+                $thumbnail_url = URL::to('images/audio.png');
+            }elseif($is_video){
+                $thumbnail_url = URL::to('images/video.png');
+            }elseif($is_pdf){
+                $thumbnail_url = URL::to('images/pdf.png');
+            }else{
+                $thumbnail_url = URL::to('images/doc.png');
+            }
+
+            $image_size_array = array(
+                'thumbnail_url'=> $thumbnail_url,
+                'large_url'=> '',
+                'medium_url'=> '',
+                'full_url'=> ''
+            );
+
+        }
+
+        $fileitems = array();
+
+        if($uploadSuccess){
+            $item = array(
+                    'url'=> URL::to('storage/media/'.$rstring.'/'.$filename),
+                    /*
+                    'thumbnail_url'=> URL::to('storage/media/'.$rstring.'/'.$ps['thumbnail']['prefix'].$filename),
+                    'large_url'=> URL::to('storage/media/'.$rstring.'/'.$ps['large']['prefix'].$filename),
+                    'medium_url'=> URL::to('storage/media/'.$rstring.'/'.$ps['medium']['prefix'].$filename),
+                    'full_url'=> URL::to('storage/media/'.$rstring.'/'.$ps['full']['prefix'].$filename),
+                    */
+                    'temp_dir'=> $destinationPath,
+                    'file_id'=> $rstring,
+                    'is_image'=>$is_image,
+                    'is_audio'=>$is_audio,
+                    'is_video'=>$is_video,
+                    'is_pdf'=>$is_pdf,
+                    'is_doc'=>$is_doc,
+                    'name'=> $filename,
+                    'type'=> $filemime,
+                    'size'=> $filesize,
+                    'delete_url'=> URL::to('storage/media/'.$rstring.'/'.$filename),
+                    'delete_type'=> 'DELETE'
+                );
+
+            foreach($image_size_array as $k=>$v){
+                $item[$k] = $v;
+            }
+
+            $fileitems[] = $item;
+
+        }
+
+        return Response::JSON(array('files'=>$fileitems) );
+    }
+
+    public function postSlider()
+    {
+        $files = Input::file('files');
+
+        $file = $files[0];
+
+        //print_r($file);
+
+        //exit();
+
+        $large_wm = public_path().'/wm/wm_lrg.png';
+        $med_wm = public_path().'/wm/wm_med.png';
+        $sm_wm = public_path().'/wm/wm_sm.png';
+
+        $rstring = str_random(15);
+
+        $destinationPath = realpath('storage/media').'/'.$rstring;
+
+        $filename = $file->getClientOriginalName();
+        $filemime = $file->getMimeType();
+        $filesize = $file->getSize();
+        $extension =$file->getClientOriginalExtension(); //if you need extension of the file
+
+        $filename = str_replace(Config::get('kickstart.invalidchars'), '-', $filename);
+
+        $uploadSuccess = $file->move($destinationPath, $filename);
+
         $thumbnail = Image::make($destinationPath.'/'.$filename)
             ->fit(100,74)
             //->insert($sm_wm,0,0, 'bottom-right')

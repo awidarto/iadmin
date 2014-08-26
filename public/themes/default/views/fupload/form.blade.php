@@ -227,12 +227,22 @@
                             }
 
                         }
+
                         /*
-                        $upl .= '<input type="hidden" name="thumbnail_url[]" value="' . $formdata['thumbnail_url'][$u] . '">';
-                        $upl .= '<input type="hidden" name="large_url[]" value="' . $formdata['large_url'][$u] . '">';
-                        $upl .= '<input type="hidden" name="medium_url[]" value="' . $formdata['medium_url'][$u] . '">';
-                        $upl .= '<input type="hidden" name="full_url[]" value="' . $formdata['full_url'][$u] . '">';
+                    'is_image'=>$is_image,
+                    'is_audio'=>$is_audio,
+                    'is_video'=>$is_video,
+                    'is_pdf'=>$is_pdf,
+                    'is_doc'=>$is_doc,
                         */
+                        if(isset($formdata['is_image'])){
+                            $upl .= '<input type="hidden" name="is_image[]" value="' . $formdata['is_image'][$u] . '">';
+                            $upl .= '<input type="hidden" name="is_audio[]" value="' . $formdata['is_audio'][$u] . '">';
+                            $upl .= '<input type="hidden" name="is_video[]" value="' . $formdata['is_video'][$u] . '">';
+                            $upl .= '<input type="hidden" name="is_pdf[]" value="' . $formdata['is_pdf'][$u] . '">';
+                            $upl .= '<input type="hidden" name="is_doc[]" value="' . $formdata['is_doc'][$u] . '">';
+                        }
+
                         $upl .= '<input type="hidden" name="filetype[]" value="' . $formdata['filetype'][$u] . '">';
                         $upl .= '<input type="hidden" name="fileurl[]" value="' . $formdata['fileurl'][$u] . '">';
                         $upl .= '<input type="hidden" name="file_id[]" value="' . $formdata['file_id'][$u] . '">';
@@ -269,12 +279,13 @@
                             }
 
                         }
-                        /*
-                        $upl .= '<input type="hidden" name="thumbnail_url[]" value="' . $allin['thumbnail_url'][$u] . '">';
-                        $upl .= '<input type="hidden" name="large_url[]" value="' . $allin['large_url'][$u] . '">';
-                        $upl .= '<input type="hidden" name="medium_url[]" value="' . $allin['medium_url'][$u] . '">';
-                        $upl .= '<input type="hidden" name="full_url[]" value="' . $allin['full_url'][$u] . '">';
-                        */
+
+                        $upl .= '<input type="hidden" name="is_image[]" value="' . $allin['is_image'][$u] . '">';
+                        $upl .= '<input type="hidden" name="is_audio[]" value="' . $allin['is_audio'][$u] . '">';
+                        $upl .= '<input type="hidden" name="is_video[]" value="' . $allin['is_video'][$u] . '">';
+                        $upl .= '<input type="hidden" name="is_pdf[]" value="' . $allin['is_pdf'][$u] . '">';
+                        $upl .= '<input type="hidden" name="is_doc[]" value="' . $allin['is_doc'][$u] . '">';
+
                         $upl .= '<input type="hidden" name="filetype[]" value="' . $allin['filetype'][$u] . '">';
                         $upl .= '<input type="hidden" name="fileurl[]" value="' . $allin['fileurl'][$u] . '">';
                         $upl .= '<input type="hidden" name="file_id[]" value="' . $allin['file_id'][$u] . '">';
@@ -361,14 +372,12 @@ $(document).ready(function(){
                     upl += '<input type="hidden" name="{{ $k }}_url[]" value="' + file.{{ $k }}_url + '">';
                 @endforeach
 
-                {{--
+                upl += '<input type="hidden" name="is_image[]" value="' + file.is_image + '">';
+                upl += '<input type="hidden" name="is_audio[]" value="' + file.is_audio + '">';
+                upl += '<input type="hidden" name="is_video[]" value="' + file.is_video + '">';
+                upl += '<input type="hidden" name="is_pdf[]" value="' + file.is_pdf + '">';
+                upl += '<input type="hidden" name="is_doc[]" value="' + file.is_doc + '">';
 
-                upl += '<input type="hidden" name="thumbnail_url[]" value="' + file.thumbnail_url + '">';
-                upl += '<input type="hidden" name="large_url[]" value="' + file.large_url + '">';
-                upl += '<input type="hidden" name="medium_url[]" value="' + file.medium_url + '">';
-                upl += '<input type="hidden" name="full_url[]" value="' + file.full_url + '">';
-
-                --}}
 
                 upl += '<input type="hidden" name="filetype[]" value="' + file.type + '">';
                 upl += '<input type="hidden" name="fileurl[]" value="' + file.url + '">';

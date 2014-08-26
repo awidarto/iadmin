@@ -88,6 +88,13 @@ class HomeslideController extends AdminController {
                     $defaults['large_url'] = $data['large_url'][$i];
                     $defaults['medium_url'] = $data['medium_url'][$i];
                     $defaults['full_url'] = $data['full_url'][$i];
+                    $defaults['file_url'] = $data['fileurl'][$i];
+
+                    $defaults['is_image'] = $data['is_image'][$i];
+                    $defaults['is_audio'] = $data['is_audio'][$i];
+                    $defaults['is_video'] = $data['is_video'][$i];
+                    $defaults['is_pdf'] = $data['is_pdf'][$i];
+                    $defaults['is_doc'] = $data['is_doc'][$i];
                 }
 
                 $files[$data['file_id'][$i]]['thumbnail_url'] = $data['thumbnail_url'][$i];
@@ -170,6 +177,14 @@ class HomeslideController extends AdminController {
                     $defaults['large_url'] = $data['large_url'][$i];
                     $defaults['medium_url'] = $data['medium_url'][$i];
                     $defaults['full_url'] = $data['full_url'][$i];
+                    $defaults['file_url'] = $data['fileurl'][$i];
+
+                    $defaults['is_image'] = $data['is_image'][$i];
+                    $defaults['is_audio'] = $data['is_audio'][$i];
+                    $defaults['is_video'] = $data['is_video'][$i];
+                    $defaults['is_pdf'] = $data['is_pdf'][$i];
+                    $defaults['is_doc'] = $data['is_doc'][$i];
+
                 }
 
                 if($data['brchead'] == $data['file_id'][$i]){
