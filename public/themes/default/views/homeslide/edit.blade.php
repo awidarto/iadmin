@@ -24,7 +24,7 @@
 
     </div>
     <div class="span6">
-        <h6>Image</h6>
+        <h6>Image / Video</h6>
         <?php
             $fupload = new Fupload();
         ?>
