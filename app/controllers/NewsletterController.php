@@ -288,6 +288,49 @@ class NewsletterController extends AdminController {
 
     }
 
+    public function postMailpreview(){
+
+            $templateId = Input::get('tid');
+            $templateBody = Input::get('body');
+            $recipient = Input::get('to');
+
+            $template = Template::find($templateId);
+
+            $template->body = $templateBody;
+
+            $props = $template->properties;
+
+            $props = explode(',',$props);
+            if(count($props) > 0){
+                $property = Property::whereIn('propertyId',$props)->get()->toArray();
+            }else{
+                $property = array();
+            }
+
+
+            $recinfo = Buyer::first()->toArray();
+
+            $content = DbView::make($template)->field('body')->with('rec', $recinfo)->with('prop',$property)->render();
+
+            Mail::send('emails.blank',array('body'=>$content), function($message) use ($recinfo){
+                $to = $recinfo['email'];
+
+                $fullname = $recinfo['firstname'].' '.$recinfo['lastname'];
+
+                $message->to($to, $fullname);
+
+                $message->subject('Investors Alliance - E newsletter');
+
+                $message->from('support@propinvestorsalliance.com');
+
+                $message->cc('support@propinvestorsalliance.com');
+
+                //$message->attach(public_path().'/storage/pdf/'.$prop['propertyId'].'.pdf');
+            });
+
+            return Response::json(array('result'=>'OK'));
+    }
+
     public function makeActions($data)
     {
         $delete = '<span class="del" id="'.$data['_id'].'" ><i class="icon-trash"></i> Delete</span>';

@@ -69,7 +69,7 @@ class EmailerCommand extends Command {
 
             $content = DbView::make($template)->field('body')->with('rec', $recinfo)->with('prop',$property)->render();
 
-            print $content;
+            //print $content;
 
             Mail::send('emails.blank',array('body'=>$content), function($message) use ($recinfo, $rec){
                 $to = $recinfo['email'];

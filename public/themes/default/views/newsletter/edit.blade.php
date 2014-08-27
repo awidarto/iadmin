@@ -16,7 +16,11 @@
         {{ Former::textarea('body','Body')->name('body')->class('code')->id('body')->style('min-height:600px;') }}
     </div>
     <div class="span3">
-        <a href="{{ URL::to('epreview/'.$formdata['_id'])}}" class="btn" target="blank">Email Preview</a>
+        <a href="{{ URL::to('epreview/'.$formdata['_id'])}}" class="btn btn-info" target="blank">Web Preview</a>
+        <div class="form-inline">
+            {{ Former::text('preview_mail','Preview Email')->class('span10')->id('preview-to') }}<span id="bt-send-preview" data-templateid="{{ $formdata['_id'] }}" class="btn btn-info btn-sm">Send</span>
+        </div>
+
         {{ Former::select('status')->options(array('inactive'=>'Inactive','active'=>'Active'))->label('Status') }}
         {{ Former::text('title','Title') }}
         {{ Former::text('slug','Permalink')->id('permalink') }}
@@ -91,6 +95,25 @@ $(document).ready(function() {
         }
     });
     */
+
+    $('#bt-send-preview').on('click',function(){
+        $.post(
+                '{{ URL::to('newsletter/mailpreview') }}',
+                {
+                    'tid' : $('#bt-send-preview').data('templateid'),
+                    'body' : $('#body').val(),
+                    'to' : $('#preview-to').val()
+                },
+                function(data){
+                    if(data.result == 'OK'){
+                        alert('preview sent');
+                    }else{
+                        alert('faild to send preview');
+                    }
+                },'json'
+            );
+    });
+
 });
 
 </script>
