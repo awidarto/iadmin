@@ -73,6 +73,7 @@ class PictureController extends AdminController {
         }
 
         copy($pic_dir.'/'.$raw, $pic_dir_temp.'/'.$raw);
+        copy($pic_dir.'/'.$raw, $pic_dir_temp.'/rotate_'.$raw);
 
         $image = Image::make($pic_dir_temp.'/'.$raw);
 
@@ -239,7 +240,7 @@ class PictureController extends AdminController {
                 }
             }
 
-        }else{
+        }else if($in['mode'] == 'expand'){
             $image = Image::make($pic_dir_temp.'/'.$filename);
 
             //landscape
@@ -289,9 +290,62 @@ class PictureController extends AdminController {
             }
 
 
+        }else if($in['mode'] == 'rotate'){
+            $image = Image::make($pic_dir_temp.'/'.$filename);
+
+            if(in_array('all', $applyto)){
+                foreach( $ps as $p){
+                    $pimage = Image::make($pic_dir_temp.'/rotate_'.$filename);
+                    $pimage->resize((int)$p['width'],null,function ($constraint) {
+                                $constraint->aspectRatio();
+                            })
+                        ->save($pic_dir.'/'.$p['prefix'].$filename);
+                }
+            }else{
+                foreach( $applyto as $p){
+                    $pimage = Image::make($pic_dir_temp.'/rotate_'.$filename);
+                    $pimage->resize((int)$ps[$p]['width'],null,function ($constraint) {
+                                $constraint->aspectRatio();
+                            })
+                        ->save($pic_dir.'/'.$ps[$p]['prefix'].$filename);
+                }
+            }
+
+
         }
 
         return Response::json(array('result'=>'OK'));
+
+    }
+
+    public function postRotate()
+    {
+
+        $in = Input::get();
+
+        $pic_id = $in['id'];
+
+        $dir = $in['dir'];
+
+        $ps = Config::get('picture.sizes');
+
+        $filename = $in['filename'];
+
+        $pic_dir = $this->pic_dir.'/'.$pic_id;
+
+        $pic_dir_temp = $pic_dir.'/tmp';
+
+        $url = URL::to('storage/media').'/'.$pic_id.'/tmp/rotate_'.$filename.'?'.time();
+
+        $image = Image::make($pic_dir_temp.'/rotate_'.$filename);
+
+        $dir = ($dir == 'CW')? -90:90;
+
+        if($image->rotate($dir)->save()){
+            return Response::json(array('result'=>'OK','url'=>$url));
+        }else{
+            return Response::json(array('result'=>'NOK'));
+        }
 
     }
 

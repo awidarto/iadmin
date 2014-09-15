@@ -45,6 +45,7 @@ class PropertyController extends AdminController {
             //array('Basement',array('search'=>true,'sort'=>true)),
             array('Category',array('search'=>true,'sort'=>true)),
             array('Status',array('search'=>true,'sort'=>true, 'select'=>Config::get('ia.search_publishing'))),
+            array('Property Manager',array('search'=>true,'sort'=>true)),
             array('Created',array('search'=>true,'sort'=>true,'date'=>true)),
             array('Last Update',array('search'=>true,'sort'=>true,'date'=>true)),
         );
@@ -85,6 +86,7 @@ class PropertyController extends AdminController {
             //array('basement',array('kind'=>'text','query'=>'like','pos'=>'both','show'=>true)),
             array('category',array('kind'=>'text','query'=>'like','pos'=>'both','show'=>true)),
             array('propertyStatus',array('kind'=>'text','query'=>'like','pos'=>'both','show'=>true)),
+            array('propertyManager',array('kind'=>'text','query'=>'like','pos'=>'both','show'=>true)),
             array('createdDate',array('kind'=>'datetime','query'=>'like','pos'=>'both','show'=>true)),
             array('lastUpdate',array('kind'=>'datetime','query'=>'like','pos'=>'both','show'=>true)),
         );

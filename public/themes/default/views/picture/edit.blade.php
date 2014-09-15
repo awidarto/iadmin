@@ -93,13 +93,31 @@
 
                 $('#is-crop').html('On');
                 $('#is-expand').html('Off');
+                $('#is-rotate').html('Off');
 
-            }else{
+                $('#rotate_ccw').prop('disabled',true);
+                $('#rotate_cw').prop('disabled',true);
+
+            }else if(mode == 'expand'){
                 $('.img-container img').attr('src',$('#original').val());
                 $('.img-preview').hide();
                 $image.cropper('disable');
                 $('#is-crop').html('Off');
                 $('#is-expand').html('On');
+                $('#is-rotate').html('Off');
+
+                $('#rotate_ccw').prop('disabled',true);
+                $('#rotate_cw').prop('disabled',true);
+            }else if(mode == 'rotate'){
+                $('.img-container img').attr('src',$('#original').val());
+                $('.img-preview').hide();
+                $image.cropper('disable');
+                $('#is-crop').html('Off');
+                $('#is-expand').html('Off');
+                $('#is-rotate').html('On');
+
+                $('#rotate_ccw').prop('disabled',false);
+                $('#rotate_cw').prop('disabled',false);
             }
         });
 
@@ -195,6 +213,43 @@
             $('#expand_original').hide();
         });
 
+        $('#rotate_ccw').on('click',function(){
+            $.post('{{URL::to('picture/rotate')}}',
+            {
+                filename: $('#filename').val(),
+                id: $('#_id').val(),
+                mode : mode,
+                dir : 'CCW'
+            },
+            function(data){
+                if(data.result == 'OK'){
+                    $('.img-container img').attr('src',data.url);
+                }else{
+                    alert('Something is not right');
+                }
+            },
+            'json');
+
+        });
+
+        $('#rotate_cw').on('click',function(){
+            $.post('{{URL::to('picture/rotate')}}',
+            {
+                filename: $('#filename').val(),
+                id: $('#_id').val(),
+                mode : mode,
+                dir : 'CW'
+            },
+            function(data){
+                if(data.result == 'OK'){
+                    $('.img-container img').attr('src',data.url);
+                }else{
+                    alert('Something is not right');
+                }
+            },
+            'json');
+
+        });
 
         function setLastData(){
             lastdata = {
@@ -236,10 +291,15 @@
                 }else{
                     var image = $image.cropper('getData');
                 }
-            }else{
+            }else if(mode == 'expand'){
                 var image = {
                     width: $('#x-width').val(),
                     height: $('#x-height').val()
+                };
+            }else if(mode == 'rotate'){
+                var image = {
+                    width: 0,
+                    height: 0
                 };
             }
 
@@ -293,9 +353,17 @@
         </div>
 
         <div class="row action-box">
+            <h5>Rotate</h5>
+            <input type="radio" class="mode" name="mode" value="rotate"/> <span id="is-rotate">Off</span>
+            {{ Former::button('90 CCW')->class('btn')->id('rotate_ccw') }}
+            {{ Former::button('90 CW')->class('btn')->id('rotate_cw') }}
+
+        </div>
+
+        <div class="row action-box">
             <h5>Expand</h5>
             <input type="radio" class="mode" name="mode" value="expand"/> <span id="is-expand">Off</span>
-            {{ Former::button('Preview')->class('btn pull-right')->id('expand_preview') }}
+            {{ Former::button('Preview')->class('btn pull-right')->id('expand_preview') }}&nbsp;&nbsp;&nbsp;
             {{ Former::button('Original')->class('btn pull-right')->id('expand_original') }}
             <br />
             {{ Former::text('x-width','width')->id('x-width')->class('span4')->value(800)}}
