@@ -84,6 +84,7 @@
             if(mode == 'crop'){
                 $('.img-preview').show();
                 $('.img-container img').attr('src',$('#original').val());
+                $('.img-container img').css('max-width','none');
 
                 $image.cropper('enable');
 
@@ -100,6 +101,7 @@
 
             }else if(mode == 'expand'){
                 $('.img-container img').attr('src',$('#original').val());
+                $('.img-container img').css('max-width','100%');
                 $('.img-preview').hide();
                 $image.cropper('disable');
                 $('#is-crop').html('Off');
@@ -110,6 +112,7 @@
                 $('#rotate_cw').prop('disabled',true);
             }else if(mode == 'rotate'){
                 $('.img-container img').attr('src',$('#original').val());
+                $('.img-container img').css('max-width','100%');
                 $('.img-preview').hide();
                 $image.cropper('disable');
                 $('#is-crop').html('Off');
