@@ -217,6 +217,7 @@
         });
 
         $('#rotate_ccw').on('click',function(){
+            $('#rotating').show();
             $.post('{{URL::to('picture/rotate')}}',
             {
                 filename: $('#filename').val(),
@@ -230,12 +231,14 @@
                 }else{
                     alert('Something is not right');
                 }
+                $('#rotating').hide();
             },
             'json');
 
         });
 
         $('#rotate_cw').on('click',function(){
+            $('#rotating').show();
             $.post('{{URL::to('picture/rotate')}}',
             {
                 filename: $('#filename').val(),
@@ -249,6 +252,7 @@
                 }else{
                     alert('Something is not right');
                 }
+                $('#rotating').hide();
             },
             'json');
 
@@ -359,7 +363,7 @@
             <h5>Rotate</h5>
             <input type="radio" class="mode" name="mode" value="rotate"/> <span id="is-rotate">Off</span>
             {{ Former::button('90 CCW')->class('btn')->id('rotate_ccw') }}
-            {{ Former::button('90 CW')->class('btn')->id('rotate_cw') }}
+            {{ Former::button('90 CW')->class('btn')->id('rotate_cw') }} &nbsp;&nbsp;<span id="rotating" style="display:none;">rotating...</span>
 
         </div>
 
