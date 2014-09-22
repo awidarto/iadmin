@@ -117,6 +117,10 @@ class BuyerController extends AdminController {
     {
         unset($data['repass']);
         $data['pass'] = Hash::make($data['pass']);
+
+        $data['agentId'] = Auth::user()->_id;
+        $data['agentName'] = Auth::user()->fullname;
+
         return $data;
     }
 

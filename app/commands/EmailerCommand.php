@@ -43,6 +43,7 @@ class EmailerCommand extends Command {
         $recipients = Mailqueue::where('sendDate', '>=', new Carbon($todaystart) )
                             ->where('sendDate', '<=', new Carbon($todayend) )
                             ->where('status','unsent')
+                            ->take(10)
                             ->get()->toArray();
 
         $template = null;
