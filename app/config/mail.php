@@ -54,7 +54,7 @@ return array(
 	|
 	*/
 
-    'from' => array('address' => 'support@propinvestorsalliance.com', 'name' => 'Investors Alliance'),
+    'from' => array('address' => 'info@propinvestorsalliance.com', 'name' => 'Investors Alliance'),
 
 	/*
 	|--------------------------------------------------------------------------
@@ -80,7 +80,7 @@ return array(
 	|
 	*/
 
-    'username' => 'support@propinvestorsalliance.com',
+    'username' => 'info@propinvestorsalliance.com',
 
 	/*
 	|--------------------------------------------------------------------------
@@ -93,7 +93,7 @@ return array(
 	|
 	*/
 
-    'password' => 'adelaide1',
+    'password' => 'adela1de',
 
 	/*
 	|--------------------------------------------------------------------------
