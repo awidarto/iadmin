@@ -119,8 +119,8 @@ class CampaignController extends AdminController {
             $q->campaignId = $id;
             $q->email = $contact['email'];
             $q->template = $data['newsletterTemplate'];
-            $q->sendFromName = $data['sendFromName'];
-            $q->sendFromEmail = $data['sendFromEmail'];
+            $q->sendFromName = $data['sentFromName'];
+            $q->sendFromEmail = $data['sentFromEmail'];
             $q->sendDate = $senddate;
             $q->status = 'unsent';
             $q->save();
