@@ -83,7 +83,7 @@ class EmailerCommand extends Command {
 
                 $message->from('info@propinvestorsalliance.com');
 
-                $message->replyTo('info@propinvestorsalliance.com');
+                $message->replyTo('info@propinvestorsalliance.com','Djonny Suwanto');
 
                 $message->cc('support@propinvestorsalliance.com');
 
