@@ -80,7 +80,7 @@ return array(
 	|
 	*/
 
-    'username' => 'support@propinvestorsalliance.com',
+    'username' => 'info@propinvestorsalliance.com',
 
 	/*
 	|--------------------------------------------------------------------------
