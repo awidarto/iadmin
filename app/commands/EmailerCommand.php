@@ -83,6 +83,8 @@ class EmailerCommand extends Command {
 
                 $message->from('info@propinvestorsalliance.com');
 
+                $message->replyTo('info@propinvestorsalliance.com');
+
                 $message->cc('support@propinvestorsalliance.com');
 
                 Mailqueue::where('_id',$rec['_id'])->update(array('status'=>'sent'));

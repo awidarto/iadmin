@@ -80,7 +80,7 @@ return array(
 	|
 	*/
 
-    'username' => 'info@propinvestorsalliance.com',
+    'username' => 'support@propinvestorsalliance.com',
 
 	/*
 	|--------------------------------------------------------------------------
@@ -93,7 +93,7 @@ return array(
 	|
 	*/
 
-    'password' => 'adela1de',
+    'password' => 'adelaide1',
 
 	/*
 	|--------------------------------------------------------------------------
