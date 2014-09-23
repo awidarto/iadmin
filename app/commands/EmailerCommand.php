@@ -81,6 +81,8 @@ class EmailerCommand extends Command {
 
                 $message->subject('Investors Alliance - E newsletter');
 
+                print_r($rec);
+
                 if($rec['sentFromName'] == ''){
                     $message->from('info@propinvestorsalliance.com','Djonny Suwanto');
                     $message->replyTo('info@propinvestorsalliance.com','Djonny Suwanto');
@@ -88,6 +90,7 @@ class EmailerCommand extends Command {
                     $message->from($rec['sentFromEmail'],$rec['sentFromName']);
                     $message->replyTo($rec['sentFromEmail'],$rec['sentFromName']);
                 }
+
 
 
                 $message->cc('support@propinvestorsalliance.com');
