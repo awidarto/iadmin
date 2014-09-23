@@ -181,6 +181,31 @@ class BuyerController extends AdminController {
         }
     }
 
+    public function postDlxl()
+    {
+
+        $this->heads = null;
+
+
+        //"title": "Abstract of judgment,law",
+        //"slug": "abstract-of-judgment-law",
+        //"body": "<span><span>The summary of a court judgment\r\n that creates a lien against a property when filed with the county recorder.\r\n \r\n <\/span>\r\n<\/span>",
+
+        $this->fields = array(
+            array('salutation',array('kind'=>'text','query'=>'like','pos'=>'both','show'=>true)),
+            array('firstname',array('kind'=>'text','query'=>'like','pos'=>'both','show'=>true)),
+            array('lastname',array('kind'=>'text','query'=>'like','pos'=>'both','show'=>true)),
+            array('email',array('kind'=>'text','query'=>'like','pos'=>'both','show'=>true)),
+            array('phone',array('kind'=>'text','query'=>'like','pos'=>'both','show'=>true)),
+            array('address',array('kind'=>'text','query'=>'like','pos'=>'both','show'=>true)),
+            array('agentId',array('kind'=>'text','query'=>'like','pos'=>'both','show'=>true)),
+            array('agentName',array('kind'=>'text','query'=>'like','pos'=>'both','show'=>true))
+        );
+
+        return parent::postDlxl();
+    }
+
+
     public function namePic($data)
     {
         $name = HTML::link('products/view/'.$data['_id'],$data['productName']);

@@ -60,6 +60,7 @@ class AgentController extends AdminController {
             array('Email',array('search'=>true,'sort'=>true)),
             array('Mobile',array('search'=>true,'sort'=>true)),
             array('Address',array('search'=>true,'sort'=>true)),
+            array('Agent ID',array('search'=>true,'sort'=>true)),
             array('Created',array('search'=>true,'sort'=>true,'date'=>true)),
             array('Last Update',array('search'=>true,'sort'=>true,'date'=>true)),
         );
@@ -81,6 +82,7 @@ class AgentController extends AdminController {
             array('email',array('kind'=>'text','query'=>'like','pos'=>'both','show'=>true,'attr'=>array('class'=>'expander'))),
             array('mobile',array('kind'=>'text','query'=>'like','pos'=>'both','show'=>true)),
             array('address_1',array('kind'=>'text','query'=>'like','pos'=>'both','show'=>true)),
+            array('_id',array('kind'=>'text','query'=>'like','pos'=>'both','show'=>true)),
             array('createdDate',array('kind'=>'datetime','query'=>'like','pos'=>'both','show'=>true)),
             array('lastUpdate',array('kind'=>'datetime','query'=>'like','pos'=>'both','show'=>true)),
         );

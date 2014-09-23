@@ -81,7 +81,7 @@ class EmailerCommand extends Command {
 
                 $message->subject('Investors Alliance - E newsletter');
 
-                $message->from('support@propinvestorsalliance.com');
+                $message->from('info@propinvestorsalliance.com');
 
                 $message->cc('support@propinvestorsalliance.com');
 
