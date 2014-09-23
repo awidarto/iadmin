@@ -81,7 +81,7 @@ class EmailerCommand extends Command {
 
                 $message->subject('Investors Alliance - E newsletter');
 
-                print_r($rec);
+                //print_r($rec);
 
                 if($rec['sentFromName'] == ''){
                     $message->from('info@propinvestorsalliance.com','Djonny Suwanto');
