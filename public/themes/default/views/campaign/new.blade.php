@@ -28,7 +28,10 @@
         {{ Former::text('tags','Tags')->class('tag_keyword') }}
     </div>
     <div class="span6">
-        <h6>Target</h6>
+         <h6>Sender</h6>
+        {{ Former::text('sentFromName','Name') }}
+        {{ Former::text('sentFromEmail','Email') }}
+       <h6>Target</h6>
         {{ Former::select('contactGroup', 'Contact Group')
             ->options(Prefs::getContactGroup()->contactGroupToSelection('_id','title',false)) }}
         <h6>Content</h6>
