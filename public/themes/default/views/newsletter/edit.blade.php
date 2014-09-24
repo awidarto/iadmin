@@ -9,7 +9,6 @@
 
 {{ Former::hidden('id')->value($formdata['_id']) }}
 
-{{ Former::hidden('template')->value('') }}
 
 <div class="row-fluid">
     <div class="span9">
