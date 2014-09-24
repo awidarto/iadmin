@@ -95,7 +95,7 @@ class NewsletterController extends AdminController {
 
         $data['status'] = 'inactive';
 
-        $template = Str::random(8);
+        //$template = Str::random(8);
 
         /*
         if(file_put_contents(public_path().'/themes/default/views/newslettertmpl/'.$template.'.blade.php', $data['body'])){
@@ -169,7 +169,7 @@ class NewsletterController extends AdminController {
 
     public function beforeUpdate($id,$data)
     {
-        $template = ($data['template'] == '')?Str::random(8):$data['template'];
+        //$template = ($data['template'] == '')?Str::random(8):$data['template'];
 
         //file_put_contents(public_path().'/themes/default/views/newslettertmpl/'.$template.'.blade.php', $data['body']);
 
