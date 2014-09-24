@@ -27,7 +27,7 @@
         {{ Former::text('properties','Properties to be featured')->class('tag_property') }}
 
         <?php
-            //$fupload = new Fupload();
+            $fupload = new Fupload();
         ?>
 
         {{-- $fupload->id('imageupload')->title('Select Images')->label('Upload Images')->make($formdata) --}}
