@@ -30,7 +30,7 @@
             $fupload = new Fupload();
         ?>
 
-        {{-- $fupload->id('imageupload')->title('Select Images')->label('Upload Images')->make($formdata) --}}
+        {{ $fupload->id('imageupload')->title('Select Images')->label('Upload Images')->make($formdata) }}
     </div>
 </div>
 
