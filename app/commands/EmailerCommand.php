@@ -74,6 +74,7 @@ class EmailerCommand extends Command {
 
             Mail::send('emails.blank',array('body'=>$content), function($message) use ($recinfo, $rec){
                 $to = trim($recinfo['email']);
+                $rec['sentFromEmail'] = ($rec['sentFromEmail'] == '')?'info@propinvestorsalliance.com':$rec['sentFromEmail'];
 
                 $fullname = $recinfo['firstname'].' '.$recinfo['lastname'];
 
