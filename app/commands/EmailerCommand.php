@@ -73,7 +73,7 @@ class EmailerCommand extends Command {
             //print $content;
 
             Mail::send('emails.blank',array('body'=>$content), function($message) use ($recinfo, $rec){
-                $to = $recinfo['email'];
+                $to = trim($recinfo['email']);
 
                 $fullname = $recinfo['firstname'].' '.$recinfo['lastname'];
 
@@ -91,7 +91,7 @@ class EmailerCommand extends Command {
                     $message->replyTo($rec['sentFromEmail'],$rec['sentFromName']);
                 }
 
-
+                print $to;
 
                 $message->cc('support@propinvestorsalliance.com');
 
