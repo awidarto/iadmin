@@ -76,11 +76,13 @@ class EmailerCommand extends Command {
                 $to = trim($recinfo['email']);
                 $rec['sentFromEmail'] = ($rec['sentFromEmail'] == '')?'info@propinvestorsalliance.com':$rec['sentFromEmail'];
 
+                $rec['sentSubject'] = ($rec['sentSubject'] == '' || isset($rec['sentSubject']) == false)?'Investors Alliance - E newsletter':$rec['sentSubject'];
+
                 $fullname = $recinfo['firstname'].' '.$recinfo['lastname'];
 
                 $message->to($to, $fullname);
 
-                $message->subject('Investors Alliance - E newsletter');
+                $message->subject($rec['sentSubject']);
 
                 //print_r($rec);
 
