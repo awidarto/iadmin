@@ -76,7 +76,7 @@ class EmailerCommand extends Command {
                 $to = trim($recinfo['email']);
                 $rec['sentFromEmail'] = ($rec['sentFromEmail'] == '')?'info@propinvestorsalliance.com':$rec['sentFromEmail'];
 
-                $rec['sentSubject'] = ($rec['sentSubject'] == '' || isset($rec['sentSubject']) == false)?'Investors Alliance - E newsletter':$rec['sentSubject'];
+                $rec['sentSubject'] = (isset($rec['sentSubject']) && $rec['sentSubject'] != '' )?$rec['sentSubject']:'Investors Alliance - E newsletter';
 
                 $fullname = $recinfo['firstname'].' '.$recinfo['lastname'];
 
