@@ -119,6 +119,7 @@ class CampaignController extends AdminController {
             $q->campaignId = $id;
             $q->email = $contact['email'];
             $q->template = $data['newsletterTemplate'];
+            $q->sentSubject = $data['sentSubject'];
             $q->sentFromName = $data['sentFromName'];
             $q->sentFromEmail = $data['sentFromEmail'];
             $q->sendDate = $senddate;
@@ -144,6 +145,7 @@ class CampaignController extends AdminController {
             $q->campaignId = $id;
             $q->email = $contact['email'];
             $q->template = $data['newsletterTemplate'];
+            $q->sentSubject = $data['sentSubject'];
             $q->sentFromName = $data['sentFromName'];
             $q->sentFromEmail = $data['sentFromEmail'];
             $q->sendDate = $senddate;
