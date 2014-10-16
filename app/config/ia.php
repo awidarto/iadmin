@@ -21,7 +21,7 @@ return array(
             'MFH'=>'MFH',
             'DUPLEX'=>'Duplex',
             'TRIPLEX'=>'Triplex',
-            'CONDO'=>'Condominium',
+            'CONDO'=>'Condo',
             'LAND'=>'Land'
         ),
     'publishing'=>array(
